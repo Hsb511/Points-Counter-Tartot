@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="team23.lecompteurdetartot.MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/tartot_logo_iv"
+                android:layout_width="120sp"
+                android:layout_height="120sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_tartot" />
+
+            <Button
+                android:id="@+id/create_new_party_button"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:padding="16dp"
+                android:text="@string/create_new_party_button"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tartot_logo_iv" />
+
+            <Button
+                android:id="@+id/look_players_button"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:padding="16dp"
+                android:text="@string/look_players_button"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/create_new_party_button" />
+
+            <Button
+                android:id="@+id/look_parties_button"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:padding="16dp"
+                android:text="@string/look_parties_button"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/look_players_button" />
+
+            <TextView
+                android:id="@+id/title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/title"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="23sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tartot_logo_iv"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/under_title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/under_title"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tartot_logo_iv"
+                app:layout_constraintTop_toBottomOf="@+id/title_text_view" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

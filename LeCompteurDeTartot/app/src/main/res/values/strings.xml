@@ -1,0 +1,79 @@
+<resources>
+    <!-- general strings -->
+    <string name="app_name">LeCompteurDeTartot</string>
+    <string name="label_name">Le Compteur de Points</string>
+
+    <!-- strings linked to activity_main -->
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="create_new_party_button">Créer une \n nouvelle partie</string>
+    <string name="title">Le compteur de Tarot</string>
+    <string name="under_title">avec Tartot au Tarot, \n t\'y joueras tard ou tot</string>
+    <string name="look_players_button">Accéder à la liste \n des joueurs enregistrés</string>
+    <string name="look_parties_button">Accéder à la liste \n des parties enregistrées</string>
+
+    <!-- strings linked to activity_party_creation -->
+    <string name="pick_party_name"> Choisissez un nom de Partie : </string>
+    <string name="hint_party_name"> Optionnel </string>
+    <string name="pick_game_type"> Choisissez le type de Jeu : </string>
+    <string name="players_amount_text_view"> Choisissez le nombre de joueurs : </string>
+    <string name="player_edit_text">Joueur </string>
+    <string name="validate_creation_button">Valider</string>
+    <string name="default_party_name">Partie du </string>
+    <string name="double_toast">2 joueurs ne peuvent pas avoir le même nom !</string>
+    <string name="no_name_toast"> n\'a pas de nom</string>
+    <string name="new_players_toast">joueurs ont été ajoutés :</string>
+    <string name="new_player_toast">joueur a été ajouté</string>
+
+    <!-- strings linked to activity_party -->
+    <string name="create_new_game_button">Nouveau jeu</string>
+    <string name="chose_dealer"> Choisissez un dealer !</string>
+    <string name="chose_bid"> Choisissez une enchère !</string>
+    <string name="chose_oudlers_amount"> Choisissez un nombre de bouts !</string>
+    <string name="chose_attacker"> Choisissez un preneur !</string>
+    <string name="chose_called"> Choisissez un joueur appelé !</string>
+
+
+    <!-- strings linked to Bid -->
+    <string name="pass">passe</string>
+    <string name="small">petite</string>
+    <string name="guard">garde</string>
+    <string name="guard_without">garde sans</string>
+    <string name="guard_against">garde contre</string>
+
+    <!-- strings linked to game_fragment -->
+    <string name="dealer_text_view">Dealer : </string>
+    <string name="oudler_number">Nb de bouts : </string>
+    <string name="done_button">donne</string>
+    <string name="pass_button">passe</string>
+    <string name="small_button">petite</string>
+    <string name="guard_button">garde</string>
+    <string name="guard_without_button">Garde S.</string>
+    <string name="guard_against_button">Garde C.</string>
+    <string name="attacker_text_view">Preneur :</string>
+    <string name="called_text_view">Appelé :</string>
+    <string name="points_text_view">Points</string>
+    <string name="attacker_points_label">Attaque :</string>
+    <string name="defense_points_label">: Défense</string>
+    <string name="create_game_button">valider</string>
+
+    <string name="handful">Poignée</string>
+    <string name="one_at_end">Petit au bout</string>
+    <string name="chelem">Chelem</string>
+    <string name="misery">Misère</string>
+
+    <!-- strings linked to handful layout -->
+    <string name="handful_attack"> Poignée de l\'attaque</string>
+    <string name="handful_defense"> Poignée de la défense</string>
+    <string name="simple_handful"> Poignée </string>
+    <string name="double_handful"> Double Poignée </string>
+    <string name="triple_handful"> Triple Poignée </string>
+    <string name="validate_handful"> Valider </string>
+
+    <!-- strings linked to chelem layout -->
+    <string name="announced_chelem"> chelem annoncé et réussi</string>
+    <string name="failed_chelem"> chelem annoncé et non réussi</string>
+    <string name="not_announced_chelem"> chelem non annoncé et réussi</string>
+    <string name="defense_chelem"> chelem infligé par la défense </string>
+
+
+</resources>

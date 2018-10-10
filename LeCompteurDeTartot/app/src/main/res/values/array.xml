@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="game_type_array">
+        <item>Tarot</item>
+        <item>Belote</item>
+        <item>Manille</item>
+    </string-array>
+
+    <string-array name="players_amount_array">
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+</resources>
+
+

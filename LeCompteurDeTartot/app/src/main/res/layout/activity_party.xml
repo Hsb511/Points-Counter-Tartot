@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/party_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team23.lecompteurdetartot.PartyActivity">
+
+    <TextView
+        android:id="@+id/party_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/go_fragemnt_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/party_name_text_view">
+
+        <GridLayout
+            android:id="@+id/games_grid_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp">
+
+        </GridLayout>
+
+    </ScrollView>
+
+
+    <Button
+        android:id="@+id/go_fragemnt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="-8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="-8dp"
+        android:text="@string/create_new_game_button"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/game_test_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/dealer_linear_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/dealer_first_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dealer_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="@string/dealer_text_view"
+                    android:textColor="@color/colorPrimary" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dealer_second_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="@string/dealer_text_view" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/done_pass_linear_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dealer_linear_layout"
+            tools:layout_editor_absoluteY="148dp">
+
+            <ToggleButton
+                android:id="@+id/done_button"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:textOff="@string/done_button"
+                android:textOn="@string/done_button" />
+
+            <ToggleButton
+                android:id="@+id/pass_button"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:textOff="@string/pass"
+                android:textOn="@string/pass" />
+
+        </LinearLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/done_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/done_pass_linear_layout">
+
+            <LinearLayout
+                android:id="@+id/contract_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ToggleButton
+                    android:id="@+id/small_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:contentDescription="1"
+                    android:textOff="@string/small_button"
+                    android:textOn="@string/small_button"
+                    android:textSize="12sp" />
+
+                <ToggleButton
+                    android:id="@+id/guard_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:contentDescription="2"
+                    android:text="ToggleButton"
+                    android:textOff="@string/guard_button"
+                    android:textOn="@string/guard_button"
+                    android:textSize="12sp" />
+
+                <ToggleButton
+                    android:id="@+id/guard_without_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:contentDescription="4"
+                    android:text="ToggleButton"
+                    android:textOff="@string/guard_without_button"
+                    android:textOn="@string/guard_without_button"
+                    android:textSize="12sp" />
+
+                <ToggleButton
+                    android:id="@+id/guard_against_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:contentDescription="6"
+                    android:text="ToggleButton"
+                    android:textOff="@string/guard_against_button"
+                    android:textOn="@string/guard_against_button"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/oudler_number_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/contract_layout">
+
+                <TextView
+                    android:id="@+id/oudlers_number_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.01"
+                    android:text="@string/oudler_number"
+                    android:textColor="@color/colorPrimary" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="100"
+                    android:height="20dp"
+                    android:text="0"
+                    android:textOff="0"
+                    android:textOn="0" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="100"
+                    android:text="1"
+                    android:textOff="1"
+                    android:textOn="1" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="100"
+                    android:text="ToggleButton"
+                    android:textOff="2"
+                    android:textOn="2" />
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="100"
+                    android:text="ToggleButton"
+                    android:textOff="3"
+                    android:textOn="3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/attacker_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/oudler_number_layout">
+
+                <LinearLayout
+                    android:id="@+id/attacker_first_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/attacker_text_veiw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="8dp"
+                        android:text="@string/attacker_text_view"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/attacker_second_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/attacker_text_veiw2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="8dp"
+                        android:text="@string/attacker_text_view"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/called_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/attacker_layout">
+
+                <LinearLayout
+                    android:id="@+id/called_first_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/called_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="8dp"
+                        android:text="@string/called_text_view"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/called_second_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/called_text_view2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="8dp"
+                        android:text="@string/called_text_view"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/points_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/called_layout">
+
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/attacker_points_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/defense_points_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/defense_points_label"
+                        android:textColor="@color/colorPrimary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/defense_points_edit_text" />
+
+                    <EditText
+                        android:id="@+id/defense_points_edit_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginStart="8dp"
+                        android:inputType="number"
+                        android:text="00"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/points_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/points_text_view"
+                        android:textColor="@color/colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                    <EditText
+                        android:id="@+id/attacker_points_edit_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:inputType="number"
+                        android:text="91"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/attacker_points_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/attacker_points_label"
+                        android:textColor="@color/colorPrimary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/attacker_points_edit_text" />
+
+
+                </android.support.constraint.ConstraintLayout>
+
+                <SeekBar
+                    android:id="@+id/points_seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/announce_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/points_layout">
+
+                <Button
+                    android:id="@+id/handful_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:text="@string/handful"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp" />
+
+                <Button
+                    android:id="@+id/one_to_end_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:text="@string/one_at_end"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="9dp" />
+
+                <Button
+                    android:id="@+id/chelem_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:text="@string/chelem"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp" />
+
+                <Button
+                    android:id="@+id/misery_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:text="@string/misery"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <Button
+            android:id="@+id/create_game_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="@string/create_game_button"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/shadow_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/shadow"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/shadow_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/handful_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/colorButtonNormal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/double_handful_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/simple_handful_layout">
+
+            <ToggleButton
+                android:id="@+id/double_attack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="30"
+                android:text="ToggleButton"
+                android:textOff="@string/double_handful"
+                android:textOn="@string/double_handful" />
+
+            <ToggleButton
+                android:id="@+id/double_defense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="30"
+                android:text="ToggleButton"
+                android:textOff="@string/double_handful"
+                android:textOn="@string/double_handful" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/triple_handful_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/double_handful_layout">
+
+            <ToggleButton
+                android:id="@+id/triple_attack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="40"
+                android:text="ToggleButton"
+                android:textOff="@string/triple_handful"
+                android:textOn="@string/triple_handful" />
+
+            <ToggleButton
+                android:id="@+id/triple_defense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="40"
+                android:text="ToggleButton"
+                android:textOff="@string/triple_handful"
+                android:textOn="@string/triple_handful" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/handful_attack"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/handful_defense"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/simple_handful_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+            <ToggleButton
+                android:id="@+id/simple_attack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="20"
+                android:text="ToggleButton"
+                android:textOff="@string/simple_handful"
+                android:textOn="@string/simple_handful" />
+
+            <ToggleButton
+                android:id="@+id/simple_defense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="20"
+                android:text="ToggleButton"
+                android:textOff="@string/simple_handful"
+                android:textOn="@string/simple_handful" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/validate_handful_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/validate_handful"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/triple_handful_layout" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/chelem_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ToggleButton
+            android:id="@+id/chelem_annouced_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ToggleButton"
+            android:textOff="@string/announced_chelem"
+            android:textOn="@string/announced_chelem" />
+
+        <ToggleButton
+            android:id="@+id/chelem_non_annouced_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ToggleButton"
+            android:textOff="@string/not_announced_chelem"
+            android:textOn="@string/not_announced_chelem" />
+
+        <ToggleButton
+            android:id="@+id/chelem_announced_failed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ToggleButton"
+            android:textOff="@string/failed_chelem"
+            android:textOn="@string/failed_chelem" />
+
+        <ToggleButton
+            android:id="@+id/chelem_defense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ToggleButton"
+            android:textOff="@string/defense_chelem"
+            android:textOn="@string/defense_chelem" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
