@@ -58,11 +58,12 @@ public class PartyActivity extends AppCompatActivity {
     private Party currentParty;
 
     private GameType gameType = GameType.TAROT;
-    private int oneAtEnd = 0;
+    private int oneAtEnd = -1;
     private int chelemTeam = -1;
     private int chelemPoints = -1;
     private Handful handfulAttack = null;
     private Handful handfulDefense = null;
+    private ArrayList<Player> miseryPlayerList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -455,18 +456,51 @@ public class PartyActivity extends AppCompatActivity {
                         handfulPointsDefense = handfulDefense.getPoints();
                     }
 
-                    if (playWithMisery) {
+                    long miseryId1 = 0;
+                    long miseryId2 = 0;
+                    long miseryId3 = 0;
+                    long miseryId4 = 0;
+                    long miseryId5 = 0;
 
+                    if (playWithMisery) {
+                        if (miseryPlayerList.size() > 0) {
+                            Player misery1 = miseryPlayerList.get(0);
+                            if (misery1 != null) {
+                                miseryId1 = misery1.getId();
+                            }
+                        } else if (miseryPlayerList.size() > 1) {
+                            Player misery2 = miseryPlayerList.get(1);
+                            if (misery2 != null) {
+                                miseryId2 = misery2.getId();
+                            }
+                        } else if (miseryPlayerList.size() > 2) {
+                            Player misery3 = miseryPlayerList.get(2);
+                            if (misery3 != null) {
+                                miseryId3 = misery3.getId();
+                            }
+                        } else if (miseryPlayerList.size() > 3) {
+                            Player misery4 = miseryPlayerList.get(3);
+                            if (misery4 != null) {
+                                miseryId4 = misery4.getId();
+                            }
+                        } else if (miseryPlayerList.size() > 4) {
+                            Player misery5 = miseryPlayerList.get(4);
+                            if (misery5 != null) {
+                                miseryId5 = misery5.getId();
+                            }
+                        }
                     }
+
+
 
                     int points = seekBarValueToPoints(((SeekBar) findViewById(R.id.points_seekBar)).getProgress());
                     if (pass) {
                         newGame = gameDAO.createPass(currentParty.getId(), dealerId);
                     } else {
-                        //newGame = gameDAO.createGame(currentParty.getId(), dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, idMisery1, idMisery2);
+                        newGame = gameDAO.createGame(currentParty.getId(), dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, chelemPoints, chelemTeam, oneAtEnd, miseryId1, miseryId2, miseryId3, miseryId4, miseryId5);
                     }
 
-                    //test.add(newGame);
+                    test.add(newGame);
                     addGames(test);
                 }
             }
@@ -505,13 +539,14 @@ public class PartyActivity extends AppCompatActivity {
      */
     protected void addGames(ArrayList<Game> gameArrayList) {
         for (int i = 0; i < gameArrayList.size(); i++) {
+            Game newGame = gameArrayList.get(i);
             columnNumber += 1;
             //we create the textview that shows the index of the game
             TextView gameIndex = createTextViewFirstColumn(columnNumber, true);
             //We add it at the left (0) of the new line (columnNumber + 1)
             addFrameLayoutInTable(gameIndex, 0, columnNumber + 1);
 
-
+            Toast.makeText(getApplicationContext(), newGame.toString() , Toast.LENGTH_LONG).show();
         }
     }
 
@@ -617,19 +652,18 @@ public class PartyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Button oneButton = findViewById(R.id.one_to_end_button);
                 Log.i("api_niveau", String.valueOf(Build.VERSION.SDK_INT));
-                if (oneAtEnd == 0) {
+                if (oneAtEnd == -1) {
                     if (Build.VERSION.SDK_INT >= 21 ) {
                         oneButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
                     }
-
-                    oneAtEnd = 1;
-                } else if (oneAtEnd == 1) {
+                    oneAtEnd = 0;
+                } else if (oneAtEnd == 0) {
                     if (Build.VERSION.SDK_INT >= 21 ) {
                         oneButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
                     }
-                    oneAtEnd = 2;
+                    oneAtEnd = 1;
                 } else {
-                    oneAtEnd = 0;
+                    oneAtEnd = -1;
                     if (Build.VERSION.SDK_INT >= 21 ) {
                         oneButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
                     }
@@ -690,19 +724,23 @@ public class PartyActivity extends AppCompatActivity {
         });
 
         //We initialize the button for the misery
-        Button miseryButton = findViewById(R.id.misery_button);
+        final Button miseryButton = findViewById(R.id.misery_button);
         miseryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shadowLayout.setVisibility(View.VISIBLE);
                 LinearLayout miseryLayout = findViewById(R.id.misery_layout);
+                miseryLayout.removeAllViews();
                 miseryLayout.setVisibility(View.VISIBLE);
                 findViewById(R.id.game_test_layout).setVisibility(View.GONE);
                 findViewById(R.id.validate_misery_button).setVisibility(View.VISIBLE);
 
                 for (int i = 0; i < playersAmount; i++) {
+                    String playerName = playersList.get(i).getName();
                     ToggleButton playerButton = new ToggleButton(getApplicationContext());
-
+                    playerButton.setTextOff(playerName);
+                    playerButton.setTextOn(playerName);
+                    playerButton.setContentDescription(playerName);
                     miseryLayout.addView(playerButton);
                 }
             }
@@ -713,8 +751,20 @@ public class PartyActivity extends AppCompatActivity {
         miseryValidationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LinearLayout miseryLayout = findViewById(R.id.misery_layout);
+                PlayerDAO playerDAO = new PlayerDAO(getApplicationContext());
+                playerDAO.open();
+                for (int i = 0; i < miseryLayout.getChildCount(); i++) {
+                    ToggleButton playerButton = (ToggleButton) miseryLayout.getChildAt(i);
+                    if (playerButton.isChecked()) {
+                        String playerName = playerButton.getContentDescription().toString();
+                        Player miseryPlayer = playerDAO.getPlayerByName(playerName);
+                        miseryPlayerList.add(miseryPlayer);
+                    }
+                }
+
                 shadowLayout.setVisibility(View.GONE);
-                findViewById(R.id.misery_layout).setVisibility(View.GONE);
+                miseryLayout.setVisibility(View.GONE);
                 findViewById(R.id.game_test_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.validate_misery_button).setVisibility(View.GONE);
             }
