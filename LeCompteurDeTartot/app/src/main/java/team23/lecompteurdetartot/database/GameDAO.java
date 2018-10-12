@@ -131,6 +131,7 @@ public class GameDAO {
         values.put(MySQLiteGame.COLUMN_MISERY_4, 0);
         values.put(MySQLiteGame.COLUMN_MISERY_5, 0);
         long insertId = database.insert(MySQLiteGame.TABLE_GAMES, null, values);
+        //TODO FIND WHY SQLiteDatabase.insert() can return -1
         Cursor cursor = database.query(MySQLiteGame.TABLE_GAMES, allColumns,
                         MySQLiteGame.COLUMN_ID + " = " + insertId, null,
                         null, null, null);
