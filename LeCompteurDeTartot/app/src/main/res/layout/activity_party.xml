@@ -687,14 +687,13 @@
             app:layout_constraintTop_toBottomOf="@+id/triple_handful_layout" />
 
 
-
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/chelem_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
+        android:background="?attr/colorButtonNormal"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -706,6 +705,7 @@
             android:id="@+id/chelem_annouced_done"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="400"
             android:text="ToggleButton"
             android:textOff="@string/announced_chelem"
             android:textOn="@string/announced_chelem" />
@@ -714,6 +714,7 @@
             android:id="@+id/chelem_non_annouced_done"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="200"
             android:text="ToggleButton"
             android:textOff="@string/not_announced_chelem"
             android:textOn="@string/not_announced_chelem" />
@@ -722,6 +723,7 @@
             android:id="@+id/chelem_announced_failed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="-200"
             android:text="ToggleButton"
             android:textOff="@string/failed_chelem"
             android:textOn="@string/failed_chelem" />
@@ -730,9 +732,49 @@
             android:id="@+id/chelem_defense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="-400"
             android:text="ToggleButton"
             android:textOff="@string/defense_chelem"
             android:textOn="@string/defense_chelem" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/validate_chelem_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="@string/validate_handful"
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/chelem_layout"
+        app:layout_constraintStart_toStartOf="@+id/chelem_layout"
+        app:layout_constraintTop_toBottomOf="@+id/chelem_layout" />
+
+    <Button
+        android:id="@+id/validate_misery_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="@string/validate_handful"
+        android:textColor="@color/colorPrimaryDark"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/misery_layout"
+        app:layout_constraintStart_toStartOf="@+id/misery_layout"
+        app:layout_constraintTop_toBottomOf="@+id/misery_layout" />
+
+    <LinearLayout
+        android:id="@+id/misery_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/colorButtonNormal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

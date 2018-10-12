@@ -23,10 +23,13 @@ public class MySQLiteGame extends SQLiteOpenHelper {
     public static final String COLUMN_HANDFUL_ATTACK = "handful_attack";        //20: simple, 30: double, 40: triple, null: none
     public static final String COLUMN_HANDFUL_DEFENSE = "handful_defense";      //same as above
     public static final String COLUMN_CHELEM_POINTS = "chelem_points";          // 400, 200, -200
-    public static final String COLUMN_CHELEM_TEAM = "chelem_team";              //0: defense, 1: attack, null:none
+    public static final String COLUMN_CHELEM_TEAM = "chelem_team";              //0: defense, 1: attack, -1:none
     public static final String COLUMN_ONE_AT_END = "one_at_end";                //same as above
     public static final String COLUMN_MISERY_1 = "misery_1";                    //id of the Player
     public static final String COLUMN_MISERY_2 = "misery_2";                    //id of the Player
+    public static final String COLUMN_MISERY_3 = "misery_3";                    //id of the Player
+    public static final String COLUMN_MISERY_4 = "misery_3";                    //id of the Player
+    public static final String COLUMN_MISERY_5 = "misery_3";                    //id of the Player
 
 
 
@@ -50,7 +53,10 @@ public class MySQLiteGame extends SQLiteOpenHelper {
             + COLUMN_CHELEM_TEAM + " smallint, "
             + COLUMN_ONE_AT_END + " smallint, "
             + COLUMN_MISERY_1 + " integer, "
-            + COLUMN_MISERY_2 + " integer)";
+            + COLUMN_MISERY_2 + " integer)"
+            + COLUMN_MISERY_3 + " integer)"
+            + COLUMN_MISERY_4 + " integer)"
+            + COLUMN_MISERY_5 + " integer)";
 
     public MySQLiteGame(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -36,6 +36,7 @@ import team23.lecompteurdetartot.database.GameDAO;
 import team23.lecompteurdetartot.database.PartyDAO;
 import team23.lecompteurdetartot.database.PlayerDAO;
 import team23.lecompteurdetartot.java_object.Bid;
+import team23.lecompteurdetartot.java_object.Chelem;
 import team23.lecompteurdetartot.java_object.Game;
 import team23.lecompteurdetartot.java_object.GameType;
 import team23.lecompteurdetartot.java_object.Handful;
@@ -57,7 +58,8 @@ public class PartyActivity extends AppCompatActivity {
 
     private GameType gameType = GameType.TAROT;
     private int oneAtEnd = 0;
-    private int chelemTeam = 0;
+    private int chelemTeam = -1;
+    private int chelemPoints = -1;
     private Handful handfulAttack = null;
     private Handful handfulDefense = null;
 
@@ -246,6 +248,7 @@ public class PartyActivity extends AppCompatActivity {
         passButton.setChecked(false);
         done_layout.setVisibility(View.VISIBLE);
         initializeHandfulLayout();
+        initializeChelemLayout();
 
         //We initialize the dealer's layout
         putPlayersInLayout(players, dealer_layout);
@@ -543,11 +546,12 @@ public class PartyActivity extends AppCompatActivity {
 
     private void initializeAnnounceButtons() {
         final Button handfulButton = findViewById(R.id.handful_button);
+        final ConstraintLayout shadowLayout = findViewById(R.id.shadow_layout);
         //we initialize the button to set the handful(s)
         handfulButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.shadow_layout).setVisibility(View.VISIBLE);
+                shadowLayout.setVisibility(View.VISIBLE);
                 findViewById(R.id.handful_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.game_test_layout).setVisibility(View.GONE);
             }
@@ -559,7 +563,7 @@ public class PartyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 findViewById(R.id.handful_layout).setVisibility(View.GONE);
-                findViewById(R.id.shadow_layout).setVisibility(View.GONE);
+                shadowLayout.setVisibility(View.GONE);
                 findViewById(R.id.game_test_layout).setVisibility(View.VISIBLE);
 
                 if (((ToggleButton) findViewById(R.id.simple_attack)).isChecked()) {
@@ -607,7 +611,7 @@ public class PartyActivity extends AppCompatActivity {
             }
         });
 
-        //We intialize the but for the small at end
+        //We intialize the button for the small at end
         Button oneAtEndButton = findViewById(R.id.one_to_end_button);
         oneAtEndButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -631,6 +635,57 @@ public class PartyActivity extends AppCompatActivity {
                         oneButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
                     }
                 }
+            }
+        });
+
+        //We initialize the button for the chelem
+        final Button chelemButton = findViewById(R.id.chelem_button);
+        chelemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shadowLayout.setVisibility(View.VISIBLE);
+                findViewById(R.id.chelem_layout).setVisibility(View.VISIBLE);
+                findViewById(R.id.game_test_layout).setVisibility(View.GONE);
+                findViewById(R.id.validate_chelem_button).setVisibility(View.VISIBLE);
+            }
+        });
+
+        Button validateChelemButton = findViewById(R.id.validate_chelem_button);
+        validateChelemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout chelemLayout = findViewById(R.id.chelem_layout);
+                chelemLayout.setVisibility(View.GONE);
+                shadowLayout.setVisibility(View.GONE);
+                findViewById(R.id.game_test_layout).setVisibility(View.VISIBLE);
+                findViewById(R.id.validate_chelem_button).setVisibility(View.GONE);
+                boolean isChecked = false;
+                for (int i = 0; i < chelemLayout.getChildCount(); i++) {
+                    ToggleButton button = (ToggleButton) chelemLayout.getChildAt(i);
+
+                    if (button.isChecked()) {
+                        isChecked = true;
+                        break;
+                    }
+                }
+                if (!isChecked) {
+                    chelemPoints = -1;
+                    chelemTeam = -1;
+                    if (Build.VERSION.SDK_INT >= 21 ) {
+                        chelemButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                    }
+                } else {
+                    if (chelemTeam == 0) {
+                        if (Build.VERSION.SDK_INT >= 21 ) {
+                            chelemButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+                        }
+                    } else if (chelemTeam == 1) {
+                        if (Build.VERSION.SDK_INT >= 21 ) {
+                            chelemButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+                        }
+                    }
+                }
+
             }
         });
     }
@@ -701,6 +756,32 @@ public class PartyActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initializeChelemLayout() {
+        final LinearLayout chelemLayout = findViewById(R.id.chelem_layout);
+        for (int i = 0; i < chelemLayout.getChildCount(); i++) {
+            final ToggleButton chelemButton = (ToggleButton) chelemLayout.getChildAt(i);
+            final int points = Integer.parseInt(chelemButton.getContentDescription().toString());
+            chelemButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (int j = 0; j < chelemLayout.getChildCount(); j++) {
+                        if (points == -400) {
+                            chelemPoints = 200;
+                            chelemTeam = 0;
+                        } else {
+                            chelemPoints = points;
+                            chelemTeam = 1;
+                        }
+                        ToggleButton otherButton = (ToggleButton) chelemLayout.getChildAt(j);
+                        if (! (points == Integer.parseInt(otherButton.getContentDescription().toString()))) {
+                            otherButton.setChecked(false);
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private void putPlayersInLayout(ArrayList<Player> players, LinearLayout layout) {

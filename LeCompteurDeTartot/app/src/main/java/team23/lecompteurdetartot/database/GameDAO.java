@@ -40,7 +40,10 @@ public class GameDAO {
                                         MySQLiteGame.COLUMN_CHELEM_TEAM,
                                         MySQLiteGame.COLUMN_ONE_AT_END,
                                         MySQLiteGame.COLUMN_MISERY_1,
-                                        MySQLiteGame.COLUMN_MISERY_2};
+                                        MySQLiteGame.COLUMN_MISERY_2,
+                                        MySQLiteGame.COLUMN_MISERY_3,
+                                        MySQLiteGame.COLUMN_MISERY_4,
+                                        MySQLiteGame.COLUMN_MISERY_5};
 
     public GameDAO(Context context) {
         this.context = context;
@@ -78,7 +81,7 @@ public class GameDAO {
     public Game createGame(long partyId, long dealerId, int multiplicator, int oudlers_number, int points,
                            long attackerId, long calledId, int handfulAttack, int handfulDefense,
                            int chelemPoints, int chelemTeam, int oneAtEndTeam, long misery1,
-                           long misery2) {
+                           long misery2, long misery3, long misery4, long misery5) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteGame.COLUMN_PARTY_ID, partyId);
         values.put(MySQLiteGame.COLUMN_DEALER, dealerId);
@@ -94,6 +97,10 @@ public class GameDAO {
         values.put(MySQLiteGame.COLUMN_ONE_AT_END, oneAtEndTeam);
         values.put(MySQLiteGame.COLUMN_MISERY_1, misery1);
         values.put(MySQLiteGame.COLUMN_MISERY_2, misery2);
+        values.put(MySQLiteGame.COLUMN_MISERY_3, misery3);
+        values.put(MySQLiteGame.COLUMN_MISERY_4, misery4);
+        values.put(MySQLiteGame.COLUMN_MISERY_5, misery5);
+
         long insertId = database.insert(MySQLiteGame.TABLE_GAMES, null, values);
         Cursor cursor = database.query(MySQLiteGame.TABLE_GAMES, allColumns,
                 MySQLiteGame.COLUMN_ID + " = " + insertId, null,
@@ -120,6 +127,9 @@ public class GameDAO {
         values.put(MySQLiteGame.COLUMN_ONE_AT_END, -1);
         values.put(MySQLiteGame.COLUMN_MISERY_1, 0);
         values.put(MySQLiteGame.COLUMN_MISERY_2, 0);
+        values.put(MySQLiteGame.COLUMN_MISERY_3, 0);
+        values.put(MySQLiteGame.COLUMN_MISERY_4, 0);
+        values.put(MySQLiteGame.COLUMN_MISERY_5, 0);
         long insertId = database.insert(MySQLiteGame.TABLE_GAMES, null, values);
         Cursor cursor = database.query(MySQLiteGame.TABLE_GAMES, allColumns,
                         MySQLiteGame.COLUMN_ID + " = " + insertId, null,
@@ -214,14 +224,13 @@ public class GameDAO {
             int oneAtEnd = cursor.getInt(12);
             game.setOneAtEnd(oneAtEnd);
 
-            long miseryId1 = cursor.getLong(13);
-            if (miseryId1 != 0) {
-                game.setMisery1(playerDAO.getPlayerById(miseryId1));
-            }
-
-            long miseryId2 = cursor.getLong(14);
-            if (miseryId2 != 0) {
-                game.setMisery2(playerDAO.getPlayerById(miseryId2));
+            for (int i = 13; i < 18; i++) {
+                long miseryId = cursor.getLong(i);
+                ArrayList<Player> miseryList = new ArrayList<>();
+                if (miseryId != 0) {
+                    miseryList.add(playerDAO.getPlayerById(miseryId));
+                }
+                game.setMiseryPlayersList(miseryList);
             }
 
             return game;

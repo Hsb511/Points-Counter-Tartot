@@ -21,8 +21,7 @@ public class Game {
     private int oneAtEnd; //0: none, 1: Attack; 2: Defense
     private Handful handfulAttack;
     private Handful handfulDefense;
-    private Player misery1;
-    private Player misery2;
+    private ArrayList<Player> miseryPlayersList;
 
 
     /**
@@ -145,20 +144,12 @@ public class Game {
         this.handfulDefense = handfulDefense;
     }
 
-    public Player getMisery1() {
-        return misery1;
+    public ArrayList<Player> getMiseryPlayersList() {
+        return miseryPlayersList;
     }
 
-    public void setMisery1(Player misery1) {
-        this.misery1 = misery1;
-    }
-
-    public Player getMisery2() {
-        return misery2;
-    }
-
-    public void setMisery2(Player misery2) {
-        this.misery2 = misery2;
+    public void setMiseryPlayersList(ArrayList<Player> miseryPlayersList) {
+        this.miseryPlayersList = miseryPlayersList;
     }
 
     public long getPartyId() {
