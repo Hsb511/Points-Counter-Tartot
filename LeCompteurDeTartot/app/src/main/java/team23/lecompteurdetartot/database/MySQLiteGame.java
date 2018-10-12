@@ -28,8 +28,8 @@ public class MySQLiteGame extends SQLiteOpenHelper {
     public static final String COLUMN_MISERY_1 = "misery_1";                    //id of the Player
     public static final String COLUMN_MISERY_2 = "misery_2";                    //id of the Player
     public static final String COLUMN_MISERY_3 = "misery_3";                    //id of the Player
-    public static final String COLUMN_MISERY_4 = "misery_3";                    //id of the Player
-    public static final String COLUMN_MISERY_5 = "misery_3";                    //id of the Player
+    public static final String COLUMN_MISERY_4 = "misery_4";                    //id of the Player
+    public static final String COLUMN_MISERY_5 = "misery_5";                    //id of the Player
 
 
 
@@ -53,9 +53,9 @@ public class MySQLiteGame extends SQLiteOpenHelper {
             + COLUMN_CHELEM_TEAM + " smallint, "
             + COLUMN_ONE_AT_END + " smallint, "
             + COLUMN_MISERY_1 + " integer, "
-            + COLUMN_MISERY_2 + " integer)"
-            + COLUMN_MISERY_3 + " integer)"
-            + COLUMN_MISERY_4 + " integer)"
+            + COLUMN_MISERY_2 + " integer, "
+            + COLUMN_MISERY_3 + " integer, "
+            + COLUMN_MISERY_4 + " integer, "
             + COLUMN_MISERY_5 + " integer)";
 
     public MySQLiteGame(Context context) {

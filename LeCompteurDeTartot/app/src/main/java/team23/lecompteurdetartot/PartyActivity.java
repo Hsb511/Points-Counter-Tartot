@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -123,7 +124,7 @@ public class PartyActivity extends AppCompatActivity {
             PartyDAO partyDAO = new PartyDAO(getApplicationContext());
             partyDAO.open();
             currentParty = partyDAO.createParty(gameType, partyName, dateFormat.format(date), playersList);
-
+            initializeGameLayout(playersList);
 
         } else {
             long partyId = getIntent().getLongExtra("partyId", 1);
@@ -135,12 +136,11 @@ public class PartyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 findViewById(R.id.game_test_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.go_fragemnt_button).setVisibility(View.GONE);
-                //TODO reinitialize GameLayout correctly
+                //initializeGameLayout(playersList);
 
             }
         });
 
-        initializeGameLayout(playersList);
         ((Button) findViewById(R.id.shadow_button)).setClickable(false);
 
     }
@@ -170,6 +170,7 @@ public class PartyActivity extends AppCompatActivity {
         }
         return tv;
     }
+
     private String resizeName(String name, int max) {
         if (name.length() > max - (2 * playersAmount)) {
             return name.substring(0, max - (2 * playersAmount) - 1) + ".";
@@ -247,8 +248,6 @@ public class PartyActivity extends AppCompatActivity {
         doneButton.setChecked(true);
         passButton.setChecked(false);
         done_layout.setVisibility(View.VISIBLE);
-        initializeHandfulLayout();
-        initializeChelemLayout();
 
         //We initialize the dealer's layout
         putPlayersInLayout(players, dealer_layout);
@@ -361,6 +360,8 @@ public class PartyActivity extends AppCompatActivity {
 
         //We initialize the buttons for the announces
         initializeAnnounceButtons();
+        initializeHandfulLayout();
+        initializeChelemLayout();
 
         //we initialize the button for the game validation
         findViewById(R.id.create_game_button).setOnClickListener(new View.OnClickListener() {
@@ -464,8 +465,6 @@ public class PartyActivity extends AppCompatActivity {
                     } else {
                         //newGame = gameDAO.createGame(currentParty.getId(), dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, idMisery1, idMisery2);
                     }
-
-
 
                     //test.add(newGame);
                     addGames(test);
@@ -650,6 +649,7 @@ public class PartyActivity extends AppCompatActivity {
             }
         });
 
+        //We initialize the button for the chelem validation
         Button validateChelemButton = findViewById(R.id.validate_chelem_button);
         validateChelemButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -686,6 +686,37 @@ public class PartyActivity extends AppCompatActivity {
                     }
                 }
 
+            }
+        });
+
+        //We initialize the button for the misery
+        Button miseryButton = findViewById(R.id.misery_button);
+        miseryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shadowLayout.setVisibility(View.VISIBLE);
+                LinearLayout miseryLayout = findViewById(R.id.misery_layout);
+                miseryLayout.setVisibility(View.VISIBLE);
+                findViewById(R.id.game_test_layout).setVisibility(View.GONE);
+                findViewById(R.id.validate_misery_button).setVisibility(View.VISIBLE);
+
+                for (int i = 0; i < playersAmount; i++) {
+                    ToggleButton playerButton = new ToggleButton(getApplicationContext());
+
+                    miseryLayout.addView(playerButton);
+                }
+            }
+        });
+
+        //We initialize the button for the misery validation
+        Button miseryValidationButton = findViewById(R.id.validate_misery_button);
+        miseryValidationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shadowLayout.setVisibility(View.GONE);
+                findViewById(R.id.misery_layout).setVisibility(View.GONE);
+                findViewById(R.id.game_test_layout).setVisibility(View.VISIBLE);
+                findViewById(R.id.validate_misery_button).setVisibility(View.GONE);
             }
         });
     }
