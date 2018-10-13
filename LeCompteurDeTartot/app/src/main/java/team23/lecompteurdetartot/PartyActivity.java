@@ -146,6 +146,8 @@ public class PartyActivity extends AppCompatActivity {
 
     }
 
+    //Methods to update the score table
+        //The first one is for adding any text in any row and column
     protected void addFrameLayoutInTable(TextView textView, int row, int column) {
         GridLayout gamesLayout = findViewById(R.id. games_grid_layout);
         FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnNumber);
@@ -156,6 +158,7 @@ public class PartyActivity extends AppCompatActivity {
         gamesLayout.addView(borderLayout, gridLayoutParams);
     }
 
+        //The second one is for adding the index in the first colum
     private TextView createTextViewFirstColumn(int index, boolean show) {
         TextView tv = new TextView(getApplicationContext());
         tv.setText(String.valueOf(index));
