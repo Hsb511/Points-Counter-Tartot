@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.GridLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import team23.lecompteurdetartot.java_object.Bid;
@@ -100,7 +101,9 @@ public class GameDAO {
         values.put(MySQLiteGame.COLUMN_MISERY_3, misery3);
         values.put(MySQLiteGame.COLUMN_MISERY_4, misery4);
         values.put(MySQLiteGame.COLUMN_MISERY_5, misery5);
-
+        Log.i("game_dao", String.valueOf(partyId) + ", " + String.valueOf(dealerId) + ", " + String.valueOf(database.getVersion()));
+        Log.i("game_dao", values.toString());
+        Log.i("game_dao", Arrays.toString(allColumns));
         long insertId = database.insert(MySQLiteGame.TABLE_GAMES, null, values);
         Cursor cursor = database.query(MySQLiteGame.TABLE_GAMES, allColumns,
                 MySQLiteGame.COLUMN_ID + " = " + insertId, null,
@@ -131,7 +134,6 @@ public class GameDAO {
         values.put(MySQLiteGame.COLUMN_MISERY_4, 0);
         values.put(MySQLiteGame.COLUMN_MISERY_5, 0);
         long insertId = database.insert(MySQLiteGame.TABLE_GAMES, null, values);
-        //TODO FIND WHY SQLiteDatabase.insert() can return -1
         Cursor cursor = database.query(MySQLiteGame.TABLE_GAMES, allColumns,
                         MySQLiteGame.COLUMN_ID + " = " + insertId, null,
                         null, null, null);
@@ -144,7 +146,6 @@ public class GameDAO {
 
     public void deleteGame(Game game) {
         long id = game.getId();
-        System.out.println("Game deleted with id: " + id);
         database.delete(MySQLiteGame.TABLE_GAMES, MySQLiteGame.COLUMN_ID
                 + " = " + id, null);
     }

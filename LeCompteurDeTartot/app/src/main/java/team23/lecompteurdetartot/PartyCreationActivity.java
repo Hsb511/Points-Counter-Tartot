@@ -2,6 +2,8 @@ package team23.lecompteurdetartot;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.MediaCodec;
+import android.os.PatternMatcher;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import team23.lecompteurdetartot.database.PlayerDAO;
 import team23.lecompteurdetartot.java_object.GameType;
@@ -66,13 +70,19 @@ public class PartyCreationActivity extends AppCompatActivity {
                 }
                 goToSettingsActivity.putExtra("partyName", partyName);
                 goToSettingsActivity.putExtra("gameType", gameTpe);
+
                 //we add the players instantiated with the names
                 boolean goToNextActivity = true;
                 ArrayList<String> newPlayers = new ArrayList<>();
                 for (int i = 0; i < playersAmount; i++) {
-
                     EditText playerEditText = (EditText) playersListLayout.getChildAt(i);
                     String name = playerEditText.getText().toString();
+                    Log.i("regex", String.valueOf(Pattern.matches("^[a-zA-Z0-9éèùàç@ëôâê]{1,23}$", name)) + " , " + name);
+                    if (!Pattern.matches("^[a-zA-Z0-9éèùàç@ëôâê_]{1,23}$", name)) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.regex_toast), Toast.LENGTH_SHORT).show();
+                        goToNextActivity = false;
+                        break;
+                    }
                     if (name.equals("")) {
                         Toast pieceToast= Toast.makeText(getApplicationContext(), playerEditText.getHint() + " " + getResources().getString(R.string.no_name_toast), Toast.LENGTH_SHORT);
                         pieceToast.show();

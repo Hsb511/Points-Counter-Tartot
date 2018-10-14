@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import team23.lecompteurdetartot.database.GameDAO;
+import team23.lecompteurdetartot.database.MySQLiteGame;
 import team23.lecompteurdetartot.database.PartyDAO;
 import team23.lecompteurdetartot.database.PlayerDAO;
 import team23.lecompteurdetartot.java_object.Bid;
@@ -57,6 +58,7 @@ public class PartyActivity extends AppCompatActivity {
     private int screenHeight = 0;
     private Party currentParty;
 
+    private Bid bid = Bid.PASS;
     private GameType gameType = GameType.TAROT;
     private int oneAtEnd = -1;
     private int chelemTeam = -1;
@@ -282,6 +284,7 @@ public class PartyActivity extends AppCompatActivity {
             contractButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    bid = bid.intToBid(Integer.parseInt(v.getContentDescription().toString()));
                     for (int k = 0; k < contractLayout.getChildCount(); k ++) {
                         ToggleButton otherButton = (ToggleButton) contractLayout.getChildAt(k);
                         if (!contractButton.getText().equals(otherButton.getText())) {
@@ -376,7 +379,6 @@ public class PartyActivity extends AppCompatActivity {
                 PlayerDAO playerDAO = new PlayerDAO(getApplicationContext());
                 playerDAO.open();
                 long dealerId = findPlayerIdInLayout((LinearLayout) findViewById(R.id.dealer_linear_layout));
-                Bid bid = Bid.PASS;
                 int oudlersAmount = -1;
                 long attackerId = 0;
                 long calledId = 0;
@@ -500,10 +502,12 @@ public class PartyActivity extends AppCompatActivity {
                     if (pass) {
                         newGame = gameDAO.createPass(currentParty.getId(), dealerId);
                     } else {
+                        MySQLiteGame dbHelper = new MySQLiteGame(getApplicationContext());
+                        //dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 2);
                         newGame = gameDAO.createGame(currentParty.getId(), dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, chelemPoints, chelemTeam, oneAtEnd, miseryId1, miseryId2, miseryId3, miseryId4, miseryId5);
                     }
 
-                    test.add(newGame);
+                    //test.add(newGame);
                     addGames(test);
                 }
             }
@@ -523,7 +527,7 @@ public class PartyActivity extends AppCompatActivity {
                 }
             }
         }
-        LinearLayout secondLayout = (LinearLayout) layout.getChildAt(0);
+        LinearLayout secondLayout = (LinearLayout) layout.getChildAt(1);
         for (int j = 0; j < secondLayout.getChildCount(); j++) {
             if (secondLayout.getChildAt(j) instanceof ToggleButton) {
                 ToggleButton buttonPlayer = (ToggleButton) secondLayout.getChildAt(j);

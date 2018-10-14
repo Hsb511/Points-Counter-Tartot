@@ -21,6 +21,7 @@
     <string name="default_party_name">Partie du </string>
     <string name="double_toast">2 joueurs ne peuvent pas avoir le même nom !</string>
     <string name="no_name_toast"> n\'a pas de nom</string>
+    <string name="regex_toast">le nom de joueur ne peut être composé que de lettres ou de chiffres (pas d'espace autorisé, utilisez un _ à la place)</string>
     <string name="new_players_toast">joueurs ont été ajoutés :</string>
     <string name="new_player_toast">joueur a été ajouté</string>
 
