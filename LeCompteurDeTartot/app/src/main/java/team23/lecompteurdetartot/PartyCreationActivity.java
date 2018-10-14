@@ -63,23 +63,35 @@ public class PartyCreationActivity extends AppCompatActivity {
 
                 //we add the partyName, by default it's the default string + the date
                 String partyName = ((EditText) findViewById(R.id.party_name_edit_text)).getText().toString();
-                if (partyName.equals("")) {
-                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    Date date = new Date();
-                    partyName = getResources().getString(R.string.default_party_name) + " " + dateFormat.format(date);
+
+                //We check if the partyName is correctly written
+                boolean goToNextActivity = true;
+                if (!Pattern.matches("^[a-zA-Z0-9éèùàç@ëôâê_]{0,46}$", partyName)) {
+                    //if it has not been filled we fill it with a default value
+                    if (partyName.equals("")) {
+                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        Date date = new Date();
+                        partyName = getResources().getString(R.string.default_party_name) + " " + dateFormat.format(date);
+
+                    //otherwise it can contain malicious code so we do noting and print a toast
+                    } else {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.regex_partyname_toast), Toast.LENGTH_LONG).show();
+                        goToNextActivity = false;
+                    }
                 }
+
                 goToSettingsActivity.putExtra("partyName", partyName);
                 goToSettingsActivity.putExtra("gameType", gameTpe);
 
+
                 //we add the players instantiated with the names
-                boolean goToNextActivity = true;
                 ArrayList<String> newPlayers = new ArrayList<>();
                 for (int i = 0; i < playersAmount; i++) {
+                    //We check if the name of the player is correctly written and get it
                     EditText playerEditText = (EditText) playersListLayout.getChildAt(i);
                     String name = playerEditText.getText().toString();
-                    Log.i("regex", String.valueOf(Pattern.matches("^[a-zA-Z0-9éèùàç@ëôâê]{1,23}$", name)) + " , " + name);
                     if (!Pattern.matches("^[a-zA-Z0-9éèùàç@ëôâê_]{1,23}$", name)) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.regex_toast), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.regex_toast), Toast.LENGTH_LONG).show();
                         goToNextActivity = false;
                         break;
                     }
