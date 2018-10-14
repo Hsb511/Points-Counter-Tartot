@@ -191,7 +191,7 @@ public class GameDAO {
             game.setOudlersNumberAttack(cursor.getInt(4));
 
             //we get from the cursor and set the points
-            game.setPointsAttack(cursor.getFloat(5));
+            game.setPointsAttack(cursor.getInt(5));
 
             //we get from the cursor and set the attacker
             game.setAttacker(playerDAO.getPlayerById(cursor.getLong(6)));

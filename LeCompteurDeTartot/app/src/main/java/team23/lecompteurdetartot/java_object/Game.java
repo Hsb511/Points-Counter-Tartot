@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Game {
     private long id;
     private long partyId;
-    private float pointsAttack;
+    private int pointsAttack;
     private int oudlersNumberAttack;
     private ArrayList<Float> scoreArrayList;
     private Player dealer;
@@ -35,8 +35,38 @@ public class Game {
     }
 
 
-    private void calculateScore() {
-        //TODO
+    private int calculateBaseScore() {
+        int pointsOverContract = 0;
+        switch (oudlersNumberAttack) {
+            case 0: pointsOverContract = pointsAttack - 56; break;
+            case 1: pointsOverContract = pointsAttack - 51; break;
+            case 2: pointsOverContract = pointsAttack - 41; break;
+            case 3: pointsOverContract = pointsAttack - 36; break;
+            default: throw new IllegalArgumentException();
+        }
+        int scoreBeforeMultiplicator = 25 + Math.abs(pointsOverContract);
+        int points = scoreBeforeMultiplicator * bid.getMultiplicant();
+        if (handfulAttack != null) {
+            points += handfulAttack.getPoints();
+        }
+        if (pointsOverContract < 0) {
+            points = -points;
+        }
+        if (oneAtEnd == 1) {
+            points += 10;
+        } else if (oneAtEnd == 2) {
+            points -= 10;
+        }
+        if (handfulDefense != null) {
+            points -= handfulDefense.getPoints();
+        }
+        if (chelemTeam == 1) {
+            points += chelem.getPoints();
+        } else if (chelemTeam == 2) {
+            points += chelem.getPoints();
+        }
+
+        return points;
     }
 
 
@@ -88,11 +118,11 @@ public class Game {
         this.id = id;
     }
 
-    public float getPointsAttack() {
+    public int getPointsAttack() {
         return pointsAttack;
     }
 
-    public void setPointsAttack(float pointsAttack) {
+    public void setPointsAttack(int pointsAttack) {
         this.pointsAttack = pointsAttack;
     }
 

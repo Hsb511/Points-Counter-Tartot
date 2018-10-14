@@ -44,7 +44,7 @@ public class MySQLiteGame extends SQLiteOpenHelper {
             + COLUMN_DEALER + " integer not null, "
             + COLUMN_MULTIPLICATOR + " smallint, "
             + COLUMN_OUDLERS_NUMBER + " smallint, "
-            + COLUMN_POINTS + " decimal (2,1), "
+            + COLUMN_POINTS + " integer, "
             + COLUMN_ATTACKER + " integer, "
             + COLUMN_CALLED + " integer, "
             + COLUMN_HANDFUL_ATTACK + " smallint, "

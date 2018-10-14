@@ -423,7 +423,6 @@ public class PartyActivity extends AppCompatActivity {
                     }
 
 
-
                     //we check if the attacker has been set and get it
                     attackerId = findPlayerIdInLayout((LinearLayout) findViewById(R.id.attacker_layout));
                     if (attackerId == 0) {
