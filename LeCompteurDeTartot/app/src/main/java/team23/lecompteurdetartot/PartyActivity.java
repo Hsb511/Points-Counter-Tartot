@@ -157,9 +157,25 @@ public class PartyActivity extends AppCompatActivity {
     //Methods to update the score table
         //The first one is for adding any text in any row and column
     protected void addFrameLayoutInTable(TextView textView, int row, int column) {
+        textView.setHeight(40);
+        textView.setGravity(Gravity.CENTER | Gravity.CENTER);
         GridLayout gamesLayout = findViewById(R.id. games_grid_layout);
         FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnNumber);
+        FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        borderLayout.setLayoutParams(frameLayoutParams);
         borderLayout.addView(textView);
+        GridLayout.Spec rowSpec = GridLayout.spec(column, 1);
+        GridLayout.Spec columnSpec = GridLayout.spec(row, 1);
+        GridLayout.LayoutParams gridLayoutParams = new GridLayout.LayoutParams(rowSpec, columnSpec);
+        gamesLayout.addView(borderLayout, gridLayoutParams);
+    }
+
+    protected void addFrameLayoutInTable(Button button, int row, int column) {
+        GridLayout gamesLayout = findViewById(R.id. games_grid_layout);
+        FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnNumber);
+        FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        borderLayout.setLayoutParams(frameLayoutParams);
+        borderLayout.addView(button);
         GridLayout.Spec rowSpec = GridLayout.spec(column, 1);
         GridLayout.Spec columnSpec = GridLayout.spec(row, 1);
         GridLayout.LayoutParams gridLayoutParams = new GridLayout.LayoutParams(rowSpec, columnSpec);
@@ -573,6 +589,9 @@ public class PartyActivity extends AppCompatActivity {
             for (int j = 0; j < playersAmount; j++) {
                 Player player = playersList.get(j);
                 int score = - newGame.calculateBaseScore();
+                if (bid.equals(Bid.PASS)) {
+                    score = 0;
+                } else {
                 if (playersAmount == 5) {
                     if (player.getId() == attacker.getId()) {
                         score = newGame.calculateBaseScore() * 2;
@@ -588,6 +607,8 @@ public class PartyActivity extends AppCompatActivity {
                         score = newGame.calculateBaseScore() * 3;
                     }
                 }
+                }
+
 
                 TextView scoreTV = createTextViewForPlayerName(String.valueOf(score), screenWidth);
                 addFrameLayoutInTable(scoreTV, j+1, columnNumber + 1);
@@ -605,6 +626,13 @@ public class PartyActivity extends AppCompatActivity {
                 totalScoreTV.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 addFrameLayoutInTable(totalScoreTV, j+1, 1);
             }
+
+            Button deleteButton = new Button(getApplicationContext());
+            deleteButton.setText("P");
+            deleteButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            deleteButton.setContentDescription(String.valueOf(newGame.getId()));
+            addFrameLayoutInTable(deleteButton, playersAmount + 1, columnNumber + 1);
+
 
         }
     }
