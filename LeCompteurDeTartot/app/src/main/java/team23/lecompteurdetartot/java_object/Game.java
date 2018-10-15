@@ -36,7 +36,7 @@ public class Game {
 
 
     private int calculateBaseScore() {
-        int pointsOverContract = 0;
+        int pointsOverContract;
         switch (oudlersNumberAttack) {
             case 0: pointsOverContract = pointsAttack - 56; break;
             case 1: pointsOverContract = pointsAttack - 51; break;

@@ -68,17 +68,17 @@ public class PartyCreationActivity extends AppCompatActivity {
                 boolean goToNextActivity = true;
                 if (!Pattern.matches("^[a-zA-Z0-9éèùàç@ëôâê_]{0,46}$", partyName)) {
                     //if it has not been filled we fill it with a default value
-                    if (partyName.equals("")) {
-                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        Date date = new Date();
-                        partyName = getResources().getString(R.string.default_party_name) + " " + dateFormat.format(date);
+
 
                     //otherwise it can contain malicious code so we do noting and print a toast
-                    } else {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.regex_partyname_toast), Toast.LENGTH_LONG).show();
                         goToNextActivity = false;
-                    }
+                } else if (partyName.equals("")) {
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    Date date = new Date();
+                    partyName = getResources().getString(R.string.default_party_name) + " " + dateFormat.format(date);
                 }
+
 
                 goToSettingsActivity.putExtra("partyName", partyName);
                 goToSettingsActivity.putExtra("gameType", gameTpe);

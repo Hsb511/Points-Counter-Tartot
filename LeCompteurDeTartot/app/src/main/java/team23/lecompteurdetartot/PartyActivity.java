@@ -503,7 +503,7 @@ public class PartyActivity extends AppCompatActivity {
                     } else {
                         MySQLiteGame dbHelper = new MySQLiteGame(getApplicationContext());
                         //dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 2);
-                        newGame = gameDAO.createGame(currentParty.getId(), dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, chelemPoints, chelemTeam, oneAtEnd, miseryId1, miseryId2, miseryId3, miseryId4, miseryId5);
+                        newGame = gameDAO.createGame(1, dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, chelemPoints, chelemTeam, oneAtEnd, miseryId1, miseryId2, miseryId3, miseryId4, miseryId5);
                     }
 
                     //test.add(newGame);
