@@ -38,12 +38,12 @@ public enum Bid {
 	}
 
 	public Bid intToBid(int multiplicant) {
-		switch (this) {
-			case PASS: return PASS;
-			case SMALL: return SMALL;
-			case GUARD: return GUARD;
-			case GUARD_WITHOUT: return GUARD_WITHOUT;
-			case GUARD_AGAINST: return GUARD_AGAINST;
+		switch (multiplicant) {
+			case 0: return PASS;
+			case 1: return SMALL;
+			case 2: return GUARD;
+			case 4: return GUARD_WITHOUT;
+			case 6: return GUARD_AGAINST;
 			default: throw new IllegalArgumentException();
 		}
 	}

@@ -12,6 +12,8 @@ public class Party {
     private int playersAmount;
     private ArrayList<Player> playerArrayList;
     private ArrayList<Game> gameArrayList;
+
+    private ArrayList<String> scoreList = new ArrayList<>();
     private Date creationDate;
     private String partyName;
     private GameType gameType;
@@ -22,6 +24,9 @@ public class Party {
         this.playerArrayList = playerArrayList;
         this.playersAmount = playerArrayList.size();
         this.creationDate = creationDate;
+        for (int i = 0; i < playersAmount; i++) {
+            scoreList.add("0");
+        }
 
     }
 
@@ -85,5 +90,13 @@ public class Party {
 
     public void setGameType(GameType gameType) {
         this.gameType = gameType;
+    }
+
+    public ArrayList<String> getScoreList() {
+        return scoreList;
+    }
+
+    public void setScoreList(ArrayList<String> scoreList) {
+        this.scoreList = scoreList;
     }
 }

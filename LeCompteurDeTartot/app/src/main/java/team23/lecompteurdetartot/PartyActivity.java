@@ -166,7 +166,7 @@ public class PartyActivity extends AppCompatActivity {
         gamesLayout.addView(borderLayout, gridLayoutParams);
     }
 
-        //The second one is for adding the index in the first colum
+        //The second one is for adding the index in the first column
     private TextView createTextViewFirstColumn(int index, boolean show) {
         TextView tv = new TextView(getApplicationContext());
         tv.setText(String.valueOf(index));
@@ -191,6 +191,7 @@ public class PartyActivity extends AppCompatActivity {
         }
     }
 
+        //The third one is for the other case eg the
     private TextView createTextViewForPlayerName (String resizedString, int width) {
         TextView playerNameTV = new TextView(getApplicationContext());
         playerNameTV.setText(resizedString);
@@ -290,7 +291,10 @@ public class PartyActivity extends AppCompatActivity {
             contractButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    bid = bid.intToBid(Integer.parseInt(v.getContentDescription().toString()));
+                    int multiplicator = Integer.parseInt(v.getContentDescription().toString());
+                    Log.i("multiplicator", String.valueOf(multiplicator));
+                    bid = bid.intToBid(multiplicator);
+                    Log.i("multiplicator", bid.toString(getApplicationContext()));
                     for (int k = 0; k < contractLayout.getChildCount(); k ++) {
                         ToggleButton otherButton = (ToggleButton) contractLayout.getChildAt(k);
                         if (!contractButton.getText().equals(otherButton.getText())) {
@@ -380,7 +384,6 @@ public class PartyActivity extends AppCompatActivity {
         findViewById(R.id.create_game_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO CHECK THE DATA AND ADD THE GAME IN THE PARTY
                 boolean createGame = true;
                 PlayerDAO playerDAO = new PlayerDAO(getApplicationContext());
                 playerDAO.open();
@@ -556,13 +559,53 @@ public class PartyActivity extends AppCompatActivity {
     protected void addGames(ArrayList<Game> gameArrayList) {
         for (int i = 0; i < gameArrayList.size(); i++) {
             Game newGame = gameArrayList.get(i);
+            Player attacker = newGame.getAttacker();
+            Player called = newGame.getCalled();
+
             columnNumber += 1;
             //we create the textview that shows the index of the game
             TextView gameIndex = createTextViewFirstColumn(columnNumber, true);
             //We add it at the left (0) of the new line (columnNumber + 1)
             addFrameLayoutInTable(gameIndex, 0, columnNumber + 1);
 
-            Toast.makeText(getApplicationContext(), String.valueOf(newGame.calculateBaseScore()) , Toast.LENGTH_LONG).show();
+            ArrayList<String> currentScoreList = new ArrayList<>();
+            //Toast.makeText(getApplicationContext(), String.valueOf(newGame.calculateBaseScore()) , Toast.LENGTH_LONG).show();
+            for (int j = 0; j < playersAmount; j++) {
+                Player player = playersList.get(j);
+                int score = - newGame.calculateBaseScore();
+                if (playersAmount == 5) {
+                    if (player.getId() == attacker.getId()) {
+                        score = newGame.calculateBaseScore() * 2;
+                    } else if (player.getId() == called.getId()) {
+                        score = newGame.calculateBaseScore();
+                    }
+                } else if (playersAmount == 3) {
+                    if (player.getId() == attacker.getId()) {
+                        score = newGame.calculateBaseScore() * 2;
+                    }
+                } else if (playersAmount == 4) {
+                    if (player.getId() == attacker.getId()) {
+                        score = newGame.calculateBaseScore() * 3;
+                    }
+                }
+
+                TextView scoreTV = createTextViewForPlayerName(String.valueOf(score), screenWidth);
+                addFrameLayoutInTable(scoreTV, j+1, columnNumber + 1);
+                currentScoreList.add(String.valueOf(Integer.parseInt(currentParty.getScoreList().get(j))+score));
+            }
+
+            currentParty.setScoreList(currentScoreList);
+
+            for (int j = 0; j < playersAmount; j++) {
+                GridLayout table = findViewById(R.id.games_grid_layout);
+                Log.i("find_grid", ((TextView) ((FrameLayout) table.getChildAt(2)).getChildAt(0)).getText().toString());
+
+                TextView totalScoreTV = createTextViewForPlayerName(String.valueOf(currentParty.getScoreList().get(j)), screenWidth);
+                totalScoreTV.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                totalScoreTV.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                addFrameLayoutInTable(totalScoreTV, j+1, 1);
+            }
+
         }
     }
 
