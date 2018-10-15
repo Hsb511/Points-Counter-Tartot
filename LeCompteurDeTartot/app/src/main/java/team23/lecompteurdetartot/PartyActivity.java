@@ -2,6 +2,7 @@ package team23.lecompteurdetartot;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,6 +85,10 @@ public class PartyActivity extends AppCompatActivity {
             Log.i("test", "pas de game");
         }
 
+        MySQLiteGame dbHelper = new MySQLiteGame(getApplicationContext());
+        //dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 2);
+        File file = new File(dbHelper.getWritableDatabase().getPath());
+        SQLiteDatabase.deleteDatabase(file);
 
         playersAmount = getIntent().getIntExtra("playersAmount", 0);
         GridLayout gamesLayout = findViewById(R.id.games_grid_layout);
@@ -501,12 +507,16 @@ public class PartyActivity extends AppCompatActivity {
                     if (pass) {
                         newGame = gameDAO.createPass(currentParty.getId(), dealerId);
                     } else {
+                        /*
                         MySQLiteGame dbHelper = new MySQLiteGame(getApplicationContext());
                         //dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 2);
-                        newGame = gameDAO.createGame(1, dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, chelemPoints, chelemTeam, oneAtEnd, miseryId1, miseryId2, miseryId3, miseryId4, miseryId5);
+                        File file = new File(dbHelper.getWritableDatabase().getPath());
+                        SQLiteDatabase.deleteDatabase(file);*/
+                        newGame = gameDAO.createGame(currentParty.getId(), dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, chelemPoints, chelemTeam, oneAtEnd, miseryId1, miseryId2, miseryId3, miseryId4, miseryId5);
+
                     }
 
-                    //test.add(newGame);
+                    test.add(newGame);
                     addGames(test);
                 }
             }
@@ -552,7 +562,7 @@ public class PartyActivity extends AppCompatActivity {
             //We add it at the left (0) of the new line (columnNumber + 1)
             addFrameLayoutInTable(gameIndex, 0, columnNumber + 1);
 
-            Toast.makeText(getApplicationContext(), newGame.toString() , Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), String.valueOf(newGame.calculateBaseScore()) , Toast.LENGTH_LONG).show();
         }
     }
 

@@ -40,7 +40,7 @@ public class MySQLiteGame extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE = "create table "
             + TABLE_GAMES + "("
             + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_PARTY_ID + "integer not null, "
+            + COLUMN_PARTY_ID + " integer not null, "
             + COLUMN_DEALER + " integer not null, "
             + COLUMN_MULTIPLICATOR + " smallint, "
             + COLUMN_OUDLERS_NUMBER + " smallint, "

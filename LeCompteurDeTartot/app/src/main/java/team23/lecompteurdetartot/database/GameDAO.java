@@ -101,9 +101,10 @@ public class GameDAO {
         values.put(MySQLiteGame.COLUMN_MISERY_3, misery3);
         values.put(MySQLiteGame.COLUMN_MISERY_4, misery4);
         values.put(MySQLiteGame.COLUMN_MISERY_5, misery5);
-        Log.i("game_dao", String.valueOf(partyId) + ", " + String.valueOf(dealerId) + ", " + String.valueOf(database.getVersion()));
+        Log.i("game_dao", "partyId : " + String.valueOf(partyId) + ", " + "dealerId : " + String.valueOf(dealerId) + ", " + String.valueOf(database.getVersion()));
         Log.i("game_dao", values.toString());
         Log.i("game_dao", Arrays.toString(allColumns));
+        Log.i("game_dao", String.valueOf(database.getPath()));
         long insertId = database.insert(MySQLiteGame.TABLE_GAMES, null, values);
         Cursor cursor = database.query(MySQLiteGame.TABLE_GAMES, allColumns,
                 MySQLiteGame.COLUMN_ID + " = " + insertId, null,
