@@ -297,6 +297,7 @@ public class PartyActivity extends AppCompatActivity {
                 boolean passIsChecked = passButton.isChecked();
                 showDoneLayout(passIsChecked);
                 doneButton.setChecked(!passIsChecked);
+                bid = Bid.PASS;
             }
         });
 
