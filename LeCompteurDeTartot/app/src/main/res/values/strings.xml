@@ -33,6 +33,9 @@
     <string name="chose_oudlers_amount"> Choisissez un nombre de bouts !</string>
     <string name="chose_attacker"> Choisissez un preneur !</string>
     <string name="chose_called"> Choisissez un joueur appelé !</string>
+    <string name="cancel_button">Annuler</string>
+    <string name="delete_button">Supprimer</string>
+    <string name="update_button">Modifier</string>
 
 
     <!-- strings linked to Bid -->

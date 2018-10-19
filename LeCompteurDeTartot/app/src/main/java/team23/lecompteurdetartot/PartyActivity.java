@@ -3,7 +3,10 @@ package team23.lecompteurdetartot;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -22,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -151,14 +155,14 @@ public class PartyActivity extends AppCompatActivity {
         });
 
         ((Button) findViewById(R.id.shadow_button)).setClickable(false);
-
+        initializeGameButtons();
     }
 
     //Methods to update the score table
         //The first one is for adding any text in any row and column
     protected void addFrameLayoutInTable(TextView textView, int row, int column) {
-        textView.setHeight(40);
-        textView.setGravity(Gravity.CENTER | Gravity.CENTER);
+        textView.setHeight(Math.round((40*screenHeight)/1080));
+        textView.setGravity(Gravity.CENTER);
         GridLayout gamesLayout = findViewById(R.id. games_grid_layout);
         FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnNumber);
         FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -170,12 +174,16 @@ public class PartyActivity extends AppCompatActivity {
         gamesLayout.addView(borderLayout, gridLayoutParams);
     }
 
-    protected void addFrameLayoutInTable(Button button, int row, int column) {
+    protected void addFrameLayoutInTable(ImageButton imageButton, int row, int column) {
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        lp.height = Math.round((40*screenHeight)/1080);
+        lp.width = Math.round((30*screenWidth)/768);
+        imageButton.setLayoutParams(lp);
         GridLayout gamesLayout = findViewById(R.id. games_grid_layout);
         FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnNumber);
-        FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(Math.round((40*screenHeight)/1080), Math.round((30*screenWidth)/768));
         borderLayout.setLayoutParams(frameLayoutParams);
-        borderLayout.addView(button);
+        borderLayout.addView(imageButton);
         GridLayout.Spec rowSpec = GridLayout.spec(column, 1);
         GridLayout.Spec columnSpec = GridLayout.spec(row, 1);
         GridLayout.LayoutParams gridLayoutParams = new GridLayout.LayoutParams(rowSpec, columnSpec);
@@ -628,14 +636,70 @@ public class PartyActivity extends AppCompatActivity {
                 addFrameLayoutInTable(totalScoreTV, j+1, 1);
             }
 
-            Button deleteButton = new Button(getApplicationContext());
-            deleteButton.setText("P");
+            ImageButton deleteButton = new ImageButton(getApplicationContext());
+
+            Bitmap deleteButtonBp = getResizedBitmap(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.delete), Math.round((30*screenWidth)/768)-4, Math.round((40*screenHeight)/1080)-4);
+            deleteButton.setImageBitmap(deleteButtonBp);
             deleteButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             deleteButton.setContentDescription(String.valueOf(newGame.getId()));
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    findViewById(R.id.shadow_layout).setVisibility(View.VISIBLE);
+                    findViewById(R.id.get_game_back_layout).setVisibility(View.VISIBLE);
+                }
+            });
             addFrameLayoutInTable(deleteButton, playersAmount + 1, columnNumber + 1);
-
-
         }
+    }
+
+    private Bitmap getResizedBitmap (Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
+    }
+
+    private void initializeGameButtons() {
+        final ConstraintLayout shadowLayout = findViewById(R.id.shadow_layout);
+        final LinearLayout changeGameLayout = findViewById(R.id.get_game_back_layout);
+
+        ((Button) findViewById(R.id.cancel_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shadowLayout.setVisibility(View.GONE);
+                changeGameLayout.setVisibility(View.GONE);
+            }
+        });
+
+        ((Button) findViewById(R.id.delete_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shadowLayout.setVisibility(View.GONE);
+                changeGameLayout.setVisibility(View.GONE);
+            }
+        });
+
+        ((Button) findViewById(R.id.update_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shadowLayout.setVisibility(View.GONE);
+                changeGameLayout.setVisibility(View.GONE);
+
+            }
+        });
+
+
     }
 
     private Game createGameWithCurrentValues(boolean pass, long dealerId) {
