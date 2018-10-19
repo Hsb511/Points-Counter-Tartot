@@ -587,6 +587,10 @@ public class PartyActivity extends AppCompatActivity {
             Game newGame = gameArrayList.get(i);
             Player attacker = newGame.getAttacker();
             Player called = newGame.getCalled();
+            long calledId = 0;
+            if (called != null) {
+                calledId = called.getId();
+            }
 
             columnNumber += 1;
             //we create the textview that shows the index of the game
@@ -598,11 +602,11 @@ public class PartyActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), String.valueOf(newGame.calculateBaseScore()) , Toast.LENGTH_LONG).show();
             for (int j = 0; j < playersAmount; j++) {
                 Player player = playersList.get(j);
-                int score = - newGame.calculateBaseScore();
+                int score;
                 if (bid.equals(Bid.PASS)) {
                     score = 0;
                 } else {
-                    score = calculateScore(player.getId(), attacker.getId(), called.getId(), newGame.calculateBaseScore());
+                    score = calculateScore(player.getId(), attacker.getId(), calledId, newGame.calculateBaseScore());
                 }
 
 
@@ -641,7 +645,8 @@ public class PartyActivity extends AppCompatActivity {
     }
 
     private int calculateScore(long playerId, long attackerId, long calledId, int baseScore) {
-        int score = 0;
+        int score = baseScore;
+        Log.i("score", String.valueOf(score));
         if (playersAmount == 5) {
             if (playerId == attackerId) {
                 score = baseScore * 2;
@@ -658,6 +663,10 @@ public class PartyActivity extends AppCompatActivity {
             }
         }
 
+        if (playerId != attackerId && playerId != calledId) {
+            score = -score;
+        }
+
         boolean playerHasMisery = false;
         for (int i = 0; i < miseryPlayerList.size(); i++) {
             if (playerId == miseryPlayerList.get(i).getId()) {
@@ -669,6 +678,7 @@ public class PartyActivity extends AppCompatActivity {
         if (!playerHasMisery) {
             score -= 10 * miseryPlayerList.size();
         }
+
 
         return score;
     }
@@ -827,24 +837,25 @@ public class PartyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Button oneButton = findViewById(R.id.one_to_end_button);
-                Log.i("api_niveau", String.valueOf(Build.VERSION.SDK_INT));
                 if (oneAtEnd == -1) {
                     if (Build.VERSION.SDK_INT >= 21 ) {
                         oneButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.red)));
                     }
-                    oneAtEnd = 0;
-                } else if (oneAtEnd == 0) {
-                    if (Build.VERSION.SDK_INT >= 21 ) {
-                        oneButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
-                    }
                     oneAtEnd = 1;
-                } else {
-                    oneAtEnd = -1;
+                } else if (oneAtEnd == 0) {
                     if (Build.VERSION.SDK_INT >= 21 ) {
                         oneButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
                     }
+                    oneAtEnd = -1;
+                } else {
+                    oneAtEnd = 0;
+                    if (Build.VERSION.SDK_INT >= 21 ) {
+                        oneButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
+                    }
                 }
             }
+
+
         });
 
         //We initialize the button for the chelem

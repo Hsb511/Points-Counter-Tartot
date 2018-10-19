@@ -46,20 +46,29 @@ public class Game {
         }
         int scoreBeforeMultiplicator = 25 + Math.abs(pointsOverContract);
         int points = scoreBeforeMultiplicator * bid.getMultiplicant();
+
+
+
+        if (pointsOverContract < 0) {
+
+            points = -points;
+
+
+        }
+
         if (handfulAttack != null) {
             points += handfulAttack.getPoints();
-        }
-        if (pointsOverContract < 0) {
-            points = -points;
-        }
-        if (oneAtEnd == 1) {
-            points += 10*bid.getMultiplicant();
-        } else if (oneAtEnd == 2) {
-            points -= 10*bid.getMultiplicant();
         }
         if (handfulDefense != null) {
             points -= handfulDefense.getPoints();
         }
+
+        if (oneAtEnd == 1) {
+            points += 10*bid.getMultiplicant();
+        } else if (oneAtEnd == 0) {
+            points -= 10*bid.getMultiplicant();
+        }
+
         if (chelemTeam == 1) {
             points += chelem.getPoints();
         } else if (chelemTeam == 2) {
