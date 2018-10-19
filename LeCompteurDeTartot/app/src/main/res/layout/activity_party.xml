@@ -788,6 +788,7 @@
         android:layout_marginTop="8dp"
         android:background="?attr/colorButtonNormal"
         android:orientation="horizontal"
+        android:visibility="git "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -798,7 +799,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/colorPrimary"
             android:text="@string/delete_button"
+            android:textColor="@color/colorPrimaryDark"
             tools:layout_editor_absoluteX="148dp"
             tools:layout_editor_absoluteY="231dp" />
 
@@ -807,14 +810,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/cancel_button" />
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="@string/cancel_button"
+            android:textColor="@color/colorPrimary" />
 
         <Button
             android:id="@+id/update_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/update_button" />
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/update_button"
+            android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

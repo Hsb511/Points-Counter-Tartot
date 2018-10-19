@@ -72,6 +72,7 @@ public class PartyActivity extends AppCompatActivity {
     private Handful handfulAttack = null;
     private Handful handfulDefense = null;
     private ArrayList<Player> miseryPlayerList = new ArrayList<>();
+    private Game currentGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -533,18 +534,18 @@ public class PartyActivity extends AppCompatActivity {
 
                     int points = seekBarValueToPoints(((SeekBar) findViewById(R.id.points_seekBar)).getProgress());
                     if (pass) {
-                        newGame = gameDAO.createPass(currentParty.getId(), dealerId);
+                        currentGame = gameDAO.createPass(currentParty.getId(), dealerId);
                     } else {
                         /*
                         MySQLiteGame dbHelper = new MySQLiteGame(getApplicationContext());
                         //dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 2);
                         File file = new File(dbHelper.getWritableDatabase().getPath());
                         SQLiteDatabase.deleteDatabase(file);*/
-                        newGame = gameDAO.createGame(currentParty.getId(), dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, chelemPoints, chelemTeam, oneAtEnd, miseryId1, miseryId2, miseryId3, miseryId4, miseryId5);
+                        currentGame = gameDAO.createGame(currentParty.getId(), dealerId, bid.getMultiplicant(), oudlersAmount, points, attackerId, calledId, handfulPointsAttack, handfulPointsDefense, chelemPoints, chelemTeam, oneAtEnd, miseryId1, miseryId2, miseryId3, miseryId4, miseryId5);
 
                     }
 
-                    test.add(newGame);
+                    test.add(currentGame);
                     addGames(test);
                 }
             }
@@ -601,21 +602,7 @@ public class PartyActivity extends AppCompatActivity {
                 if (bid.equals(Bid.PASS)) {
                     score = 0;
                 } else {
-                if (playersAmount == 5) {
-                    if (player.getId() == attacker.getId()) {
-                        score = newGame.calculateBaseScore() * 2;
-                    } else if (player.getId() == called.getId()) {
-                        score = newGame.calculateBaseScore();
-                    }
-                } else if (playersAmount == 3) {
-                    if (player.getId() == attacker.getId()) {
-                        score = newGame.calculateBaseScore() * 2;
-                    }
-                } else if (playersAmount == 4) {
-                    if (player.getId() == attacker.getId()) {
-                        score = newGame.calculateBaseScore() * 3;
-                    }
-                }
+                    score = calculateScore(player.getId(), attacker.getId(), called.getId(), newGame.calculateBaseScore());
                 }
 
 
@@ -651,6 +638,39 @@ public class PartyActivity extends AppCompatActivity {
             });
             addFrameLayoutInTable(deleteButton, playersAmount + 1, columnNumber + 1);
         }
+    }
+
+    private int calculateScore(long playerId, long attackerId, long calledId, int baseScore) {
+        int score = 0;
+        if (playersAmount == 5) {
+            if (playerId == attackerId) {
+                score = baseScore * 2;
+            } else if (playerId == calledId) {
+                score = baseScore;
+            }
+        } else if (playersAmount == 3) {
+            if (playerId == attackerId) {
+                score = baseScore * 2;
+            }
+        } else if (playersAmount == 4) {
+            if (playerId == attackerId) {
+                score = baseScore * 3;
+            }
+        }
+
+        boolean playerHasMisery = false;
+        for (int i = 0; i < miseryPlayerList.size(); i++) {
+            if (playerId == miseryPlayerList.get(i).getId()) {
+                playerHasMisery = true;
+                score += 10 * (playersAmount - 1);
+                score += -10 * (miseryPlayerList.size()-1);
+            }
+        }
+        if (!playerHasMisery) {
+            score -= 10 * miseryPlayerList.size();
+        }
+
+        return score;
     }
 
     private Bitmap getResizedBitmap (Bitmap bm, int newWidth, int newHeight) {
@@ -699,6 +719,10 @@ public class PartyActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    protected void updateGame(int row) {
 
     }
 

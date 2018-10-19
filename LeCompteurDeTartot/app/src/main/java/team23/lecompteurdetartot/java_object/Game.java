@@ -53,9 +53,9 @@ public class Game {
             points = -points;
         }
         if (oneAtEnd == 1) {
-            points += 10;
+            points += 10*bid.getMultiplicant();
         } else if (oneAtEnd == 2) {
-            points -= 10;
+            points -= 10*bid.getMultiplicant();
         }
         if (handfulDefense != null) {
             points -= handfulDefense.getPoints();
