@@ -156,7 +156,6 @@ public class PartyActivity extends AppCompatActivity {
         });
 
         ((Button) findViewById(R.id.shadow_button)).setClickable(false);
-        initializeGameButtons();
     }
 
     //Methods to update the score table
@@ -583,6 +582,11 @@ public class PartyActivity extends AppCompatActivity {
      * @param gameArrayList
      */
     protected void addGames(ArrayList<Game> gameArrayList) {
+        addGames(gameArrayList, columnNumber);
+        columnNumber += gameArrayList.size();
+    }
+
+    protected void addGames(ArrayList<Game> gameArrayList, int rowNumber) {
         for (int i = 0; i < gameArrayList.size(); i++) {
             Game newGame = gameArrayList.get(i);
             Player attacker = newGame.getAttacker();
@@ -592,11 +596,13 @@ public class PartyActivity extends AppCompatActivity {
                 calledId = called.getId();
             }
 
-            columnNumber += 1;
+            rowNumber += 1;
+            newGame.setRow(rowNumber);
+
             //we create the textview that shows the index of the game
-            TextView gameIndex = createTextViewFirstColumn(columnNumber, true);
+            TextView gameIndex = createTextViewFirstColumn(rowNumber, true);
             //We add it at the left (0) of the new line (columnNumber + 1)
-            addFrameLayoutInTable(gameIndex, 0, columnNumber + 1);
+            addFrameLayoutInTable(gameIndex, 0, rowNumber + 1);
 
             ArrayList<String> currentScoreList = new ArrayList<>();
             //Toast.makeText(getApplicationContext(), String.valueOf(newGame.calculateBaseScore()) , Toast.LENGTH_LONG).show();
@@ -611,7 +617,7 @@ public class PartyActivity extends AppCompatActivity {
 
 
                 TextView scoreTV = createTextViewForPlayerName(String.valueOf(score), screenWidth);
-                addFrameLayoutInTable(scoreTV, j+1, columnNumber + 1);
+                addFrameLayoutInTable(scoreTV, j+1, rowNumber + 1);
                 currentScoreList.add(String.valueOf(Integer.parseInt(currentParty.getScoreList().get(j))+score));
             }
 
@@ -627,7 +633,8 @@ public class PartyActivity extends AppCompatActivity {
                 addFrameLayoutInTable(totalScoreTV, j+1, 1);
             }
 
-            ImageButton deleteButton = new ImageButton(getApplicationContext());
+            final ImageButton deleteButton = new ImageButton(getApplicationContext());
+            deleteButton.setContentDescription(String.valueOf(columnNumber + 1));
 
             Bitmap deleteButtonBp = getResizedBitmap(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.delete), Math.round((30*screenWidth)/768)-4, Math.round((40*screenHeight)/1080)-4);
             deleteButton.setImageBitmap(deleteButtonBp);
@@ -638,9 +645,10 @@ public class PartyActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     findViewById(R.id.shadow_layout).setVisibility(View.VISIBLE);
                     findViewById(R.id.get_game_back_layout).setVisibility(View.VISIBLE);
+                    initializeGameButtons(Integer.parseInt(deleteButton.getContentDescription().toString()));
                 }
             });
-            addFrameLayoutInTable(deleteButton, playersAmount + 1, columnNumber + 1);
+            addFrameLayoutInTable(deleteButton, playersAmount + 1, rowNumber + 1);
         }
     }
 
@@ -700,11 +708,15 @@ public class PartyActivity extends AppCompatActivity {
         return resizedBitmap;
     }
 
-    private void initializeGameButtons() {
+    private void initializeGameButtons(int row) {
         final ConstraintLayout shadowLayout = findViewById(R.id.shadow_layout);
         final LinearLayout changeGameLayout = findViewById(R.id.get_game_back_layout);
+        final Button cancelButton = findViewById(R.id.cancel_button);
+        final Button deleteButton = findViewById(R.id.delete_button);
+        final Button updateButton = findViewById(R.id.update_button);
+        final int finalRow = row;
 
-        ((Button) findViewById(R.id.cancel_button)).setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shadowLayout.setVisibility(View.GONE);
@@ -712,20 +724,21 @@ public class PartyActivity extends AppCompatActivity {
             }
         });
 
-        ((Button) findViewById(R.id.delete_button)).setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shadowLayout.setVisibility(View.GONE);
                 changeGameLayout.setVisibility(View.GONE);
+                //deleteGame(finalRow);
             }
         });
 
-        ((Button) findViewById(R.id.update_button)).setOnClickListener(new View.OnClickListener() {
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shadowLayout.setVisibility(View.GONE);
                 changeGameLayout.setVisibility(View.GONE);
-
+                //updateGame(finalRow);
             }
         });
 
@@ -733,6 +746,13 @@ public class PartyActivity extends AppCompatActivity {
     }
 
     protected void updateGame(int row) {
+        //TODO THE ROW SHOULD BE DELETED BEFORE BEING RE-ADDED
+        ArrayList<Game> gameToBeUpdated = new ArrayList<>();
+        gameToBeUpdated.add(currentGame);
+        addGames(gameToBeUpdated);
+    }
+
+    protected void deleteGame(int row) {
 
     }
 

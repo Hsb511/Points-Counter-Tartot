@@ -22,6 +22,7 @@ public class Game {
     private Handful handfulAttack;
     private Handful handfulDefense;
     private ArrayList<Player> miseryPlayersList;
+    private int row = 0;
 
 
     /**
@@ -199,5 +200,11 @@ public class Game {
         this.partyId = partyId;
     }
 
+    public int getRow() {
+        return row;
+    }
 
+    public void setRow(int row) {
+        this.row = row;
+    }
 }
