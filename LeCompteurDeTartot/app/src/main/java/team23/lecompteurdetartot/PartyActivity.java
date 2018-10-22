@@ -762,18 +762,34 @@ public class PartyActivity extends AppCompatActivity {
     protected void deleteGame(int row) {
         GridLayout tableLayout = findViewById(R.id.games_grid_layout);
         int columnIndex = 1;
+        int playerNumber = 1;
+        ArrayList<String> currentScoreList = new ArrayList<>();
         for (int i = 0; i < tableLayout.getChildCount(); i++) {
             FrameLayout fl = (FrameLayout) tableLayout.getChildAt(i);
             GridLayout.LayoutParams params = (GridLayout.LayoutParams) fl.getLayoutParams();
             GridLayout.Spec rowSpec = params.rowSpec;
 
             if (rowSpec.equals(GridLayout.spec(row + 1, 1))) {
+                // We delete the value of the row dynamically and we hide the Layout
                 fl.removeAllViews();
                 fl.setVisibility(View.GONE);
 
+
+                // We delete the Game object in the database
                 if (fl.getChildAt(0) instanceof Button) {
                     GameDAO gameDAO = new GameDAO(getApplicationContext());
                     gameDAO.open();
+                    //TODO DELETE GAME IN THE DB
+
+                // We update the score
+                } else if (fl.getChildAt(0) instanceof TextView && fl.getChildAt(0).getContentDescription() == null) {
+                    int gameScore = Integer.parseInt(((TextView) fl.getChildAt(0)).getText().toString()) - Integer.parseInt(currentParty.getScoreList().get(playerNumber));
+                    TextView totalScoreTV = createTextViewForPlayerName(String.valueOf(gameScore), screenWidth);
+                    totalScoreTV.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                    totalScoreTV.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    addFrameLayoutInTable(totalScoreTV, gameScore, 1);
+                    currentScoreList.add(String.valueOf(gameScore));
+                    playerNumber ++;
                 }
 
 
@@ -793,7 +809,7 @@ public class PartyActivity extends AppCompatActivity {
         }
         columnNumber --;
         deletedGameAmount ++;
-
+        currentParty.setScoreList(currentScoreList);
     }
 
     private Game createGameWithCurrentValues(boolean pass, long dealerId) {
