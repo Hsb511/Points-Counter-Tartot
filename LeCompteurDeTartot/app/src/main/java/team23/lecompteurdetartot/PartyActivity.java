@@ -59,6 +59,7 @@ public class PartyActivity extends AppCompatActivity {
     private String partyName = "";
     private static int NAME_SIZE_MAX = 14;
     private int columnNumber = 0;
+    private int columnMax = 0;
     private boolean playWithMisery = true;
     private int screenWidth = 0;
     private int screenHeight = 0;
@@ -164,7 +165,7 @@ public class PartyActivity extends AppCompatActivity {
         textView.setHeight(Math.round((40*screenHeight)/1080));
         textView.setGravity(Gravity.CENTER);
         GridLayout gamesLayout = findViewById(R.id. games_grid_layout);
-        FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnNumber);
+        FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnMax);
         FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         borderLayout.setLayoutParams(frameLayoutParams);
         borderLayout.addView(textView);
@@ -180,7 +181,7 @@ public class PartyActivity extends AppCompatActivity {
         lp.width = Math.round((30*screenWidth)/768);
         imageButton.setLayoutParams(lp);
         GridLayout gamesLayout = findViewById(R.id. games_grid_layout);
-        FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnNumber);
+        FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnMax);
         FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(Math.round((40*screenHeight)/1080), Math.round((30*screenWidth)/768));
         borderLayout.setLayoutParams(frameLayoutParams);
         borderLayout.addView(imageButton);
@@ -193,6 +194,7 @@ public class PartyActivity extends AppCompatActivity {
         //The second one is for adding the index in the first column
     private TextView createTextViewFirstColumn(int index, boolean show) {
         TextView tv = new TextView(getApplicationContext());
+        tv.setContentDescription("column_index");
         tv.setText(String.valueOf(index));
         tv.setWidth(Math.round((30*screenWidth)/768));
         tv.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -228,20 +230,20 @@ public class PartyActivity extends AppCompatActivity {
         return playerNameTV;
     }
 
-    private FrameLayout createFrameLayoutForGrid (int columnNumber, int rowNumber, int columnMax, int rowMax) {
+    private FrameLayout createFrameLayoutForGrid (int columnIndex, int rowIndex, int columnMax, int rowMax) {
         int paddingLeft = 1;
         int paddingTop = 1;
         int paddingRight = 1;
         int paddingBottom = 1;
 
-        if (columnNumber == 0) {
+        if (columnIndex == 0) {
             paddingLeft = 2;
-        } else if (columnNumber == columnMax) {
+        } else if (columnIndex == columnMax) {
             paddingRight = 2;
         }
-        if (rowNumber == 0) {
+        if (rowIndex == 0) {
             paddingTop = 2;
-        } else if (rowNumber == rowMax) {
+        } else if (rowIndex == rowMax) {
             //paddingBottom = 2;
         }
         FrameLayout borderLayout = new FrameLayout(getApplicationContext());
@@ -639,7 +641,7 @@ public class PartyActivity extends AppCompatActivity {
             Bitmap deleteButtonBp = getResizedBitmap(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.delete), Math.round((30*screenWidth)/768)-4, Math.round((40*screenHeight)/1080)-4);
             deleteButton.setImageBitmap(deleteButtonBp);
             deleteButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            deleteButton.setContentDescription(String.valueOf(newGame.getId()));
+            deleteButton.setId((int) newGame.getId());
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -729,7 +731,7 @@ public class PartyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 shadowLayout.setVisibility(View.GONE);
                 changeGameLayout.setVisibility(View.GONE);
-                //deleteGame(finalRow);
+                deleteGame(finalRow);
             }
         });
 
@@ -753,7 +755,34 @@ public class PartyActivity extends AppCompatActivity {
     }
 
     protected void deleteGame(int row) {
+        GridLayout tableLayout = findViewById(R.id.games_grid_layout);
+        for (int i = 0; i < tableLayout.getChildCount(); i++) {
+            FrameLayout fl = (FrameLayout) tableLayout.getChildAt(i);
+            GridLayout.LayoutParams params = (GridLayout.LayoutParams) fl.getLayoutParams();
+            GridLayout.Spec rowSpec = params.rowSpec;
 
+            if (rowSpec.equals(GridLayout.spec(row + 1, 1))) {
+                fl.removeAllViews();
+                fl.setVisibility(View.GONE);
+            } else {
+                if (fl.getChildAt(0) instanceof TextView) {
+                    TextView tv = (TextView) fl.getChildAt(0);
+                    if (tv.getContentDescription()  != null) {
+                        if (tv.getContentDescription().toString().equals("column_index")) {
+                            int columnIndex = Integer.parseInt(tv.getText().toString());
+                            Log.i("delete", "column index founded : " + String.valueOf(columnIndex));
+                            if (columnIndex > row) {
+                                columnIndex --;
+                                tv.setText(String.valueOf(columnIndex));
+                            }
+                        }
+
+                    }
+                }
+            }
+
+        }
+        columnNumber --;
     }
 
     private Game createGameWithCurrentValues(boolean pass, long dealerId) {
