@@ -60,6 +60,7 @@ public class PartyActivity extends AppCompatActivity {
     private static int NAME_SIZE_MAX = 14;
     private int columnNumber = 0;
     private int columnMax = 0;
+    private int deletedGameAmount = 0;
     private boolean playWithMisery = true;
     private int screenWidth = 0;
     private int screenHeight = 0;
@@ -584,8 +585,8 @@ public class PartyActivity extends AppCompatActivity {
      * @param gameArrayList
      */
     protected void addGames(ArrayList<Game> gameArrayList) {
-        addGames(gameArrayList, columnNumber);
-        columnNumber += gameArrayList.size();
+        addGames(gameArrayList, columnMax);
+        columnMax += gameArrayList.size();
     }
 
     protected void addGames(ArrayList<Game> gameArrayList, int rowNumber) {
@@ -598,11 +599,15 @@ public class PartyActivity extends AppCompatActivity {
                 calledId = called.getId();
             }
 
+            if (rowNumber == columnMax) {
+                columnNumber ++;
+            }
+
             rowNumber += 1;
             newGame.setRow(rowNumber);
 
             //we create the textview that shows the index of the game
-            TextView gameIndex = createTextViewFirstColumn(rowNumber, true);
+            TextView gameIndex = createTextViewFirstColumn(columnNumber, true);
             //We add it at the left (0) of the new line (columnNumber + 1)
             addFrameLayoutInTable(gameIndex, 0, rowNumber + 1);
 
@@ -636,7 +641,7 @@ public class PartyActivity extends AppCompatActivity {
             }
 
             final ImageButton deleteButton = new ImageButton(getApplicationContext());
-            deleteButton.setContentDescription(String.valueOf(columnNumber + 1));
+            deleteButton.setContentDescription(String.valueOf(columnMax + 1));
 
             Bitmap deleteButtonBp = getResizedBitmap(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.delete), Math.round((30*screenWidth)/768)-4, Math.round((40*screenHeight)/1080)-4);
             deleteButton.setImageBitmap(deleteButtonBp);
@@ -756,6 +761,7 @@ public class PartyActivity extends AppCompatActivity {
 
     protected void deleteGame(int row) {
         GridLayout tableLayout = findViewById(R.id.games_grid_layout);
+        int columnIndex = 1;
         for (int i = 0; i < tableLayout.getChildCount(); i++) {
             FrameLayout fl = (FrameLayout) tableLayout.getChildAt(i);
             GridLayout.LayoutParams params = (GridLayout.LayoutParams) fl.getLayoutParams();
@@ -764,25 +770,30 @@ public class PartyActivity extends AppCompatActivity {
             if (rowSpec.equals(GridLayout.spec(row + 1, 1))) {
                 fl.removeAllViews();
                 fl.setVisibility(View.GONE);
+
+                if (fl.getChildAt(0) instanceof Button) {
+                    GameDAO gameDAO = new GameDAO(getApplicationContext());
+                    gameDAO.open();
+                }
+
+
             } else {
+
                 if (fl.getChildAt(0) instanceof TextView) {
                     TextView tv = (TextView) fl.getChildAt(0);
                     if (tv.getContentDescription()  != null) {
-                        if (tv.getContentDescription().toString().equals("column_index")) {
-                            int columnIndex = Integer.parseInt(tv.getText().toString());
-                            Log.i("delete", "column index founded : " + String.valueOf(columnIndex));
-                            if (columnIndex > row) {
-                                columnIndex --;
-                                tv.setText(String.valueOf(columnIndex));
-                            }
+                        if (tv.getContentDescription().toString().equals("column_index") && Integer.parseInt(tv.getText().toString()) > 0) {
+                            tv.setText(String.valueOf(columnIndex));
+                            columnIndex ++;
                         }
-
                     }
                 }
             }
 
         }
         columnNumber --;
+        deletedGameAmount ++;
+
     }
 
     private Game createGameWithCurrentValues(boolean pass, long dealerId) {
