@@ -36,6 +36,7 @@
     <string name="cancel_button">Annuler</string>
     <string name="delete_button">Supprimer</string>
     <string name="update_button">Modifier</string>
+    <string name="go_back_menu_button">Retourner au menu</string>
 
 
     <!-- strings linked to Bid -->

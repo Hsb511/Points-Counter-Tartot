@@ -1,6 +1,7 @@
 package team23.lecompteurdetartot;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -157,7 +158,19 @@ public class PartyActivity extends AppCompatActivity {
             }
         });
 
+        Button menu_button = findViewById(R.id.go_main_menu_button);
+        menu_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goMenuIntent = new Intent(PartyActivity.this, MainActivity.class);
+                startActivity(goMenuIntent);
+
+            }
+        });
+
+
         ((Button) findViewById(R.id.shadow_button)).setClickable(false);
+
     }
 
     //Methods to update the score table
@@ -625,7 +638,9 @@ public class PartyActivity extends AppCompatActivity {
 
                 TextView scoreTV = createTextViewForPlayerName(String.valueOf(score), screenWidth);
                 addFrameLayoutInTable(scoreTV, j+1, rowNumber + 1);
-                currentScoreList.add(String.valueOf(Integer.parseInt(currentParty.getScoreList().get(j))+score));
+                if (!currentParty.getScoreList().isEmpty()) {
+                    currentScoreList.add(String.valueOf(Integer.parseInt(currentParty.getScoreList().get(j))+score));
+                }
             }
 
             currentParty.setScoreList(currentScoreList);
@@ -760,6 +775,7 @@ public class PartyActivity extends AppCompatActivity {
     }
 
     protected void deleteGame(int row) {
+        /*
         GridLayout tableLayout = findViewById(R.id.games_grid_layout);
         int columnIndex = 1;
         int playerNumber = 1;
@@ -809,7 +825,7 @@ public class PartyActivity extends AppCompatActivity {
         }
         columnNumber --;
         deletedGameAmount ++;
-        currentParty.setScoreList(currentScoreList);
+        currentParty.setScoreList(currentScoreList); */
     }
 
     private Game createGameWithCurrentValues(boolean pass, long dealerId) {
