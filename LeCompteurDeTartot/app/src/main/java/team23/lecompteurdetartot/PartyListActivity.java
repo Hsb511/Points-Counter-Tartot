@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.app.ListActivity;
 import team23.lecompteurdetartot.database.PartyDAO;
@@ -46,8 +48,15 @@ public class PartyListActivity extends ListActivity {
         for (int i = 0; i < values.size(); i++) {
             names.add(values.get(i).getPartyName());
         }
+
+
+        /*View cell = ;
+
+        PartyViewHolder viewHolder = (PartyViewHolder) cell.getTag(); */
+
+        /*
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, names);
-        setListAdapter(adapter);
+        setListAdapter(adapter); */
     }
 
     // Sera appelée par l'attribut onClick
