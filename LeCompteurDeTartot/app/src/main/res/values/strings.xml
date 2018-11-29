@@ -84,5 +84,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- strings linked to Belote layout -->
+    <string name="jack_amount">nombre de valets (hors atout) : </string>
+    <string name="queen_amount">nombre de dames : </string>
+    <string name="king_amount">nombre de rois : </string>
+    <string name="ten_amount">nombre de dix : </string>
+    <string name="ace_amount">nombre d\'as : </string>
+    <string name="nine_trump">neuf d\'atout ? </string>
+    <string name="jack_trump">valet d\'atout ? </string>
+    <string name="dix_der">dix de der ? (dernier pli) </string>
+    <string name="belote">belote ? (roi et dame d\'atout) </string>
+    <string name="capot">capot ?</string>
+
 
 </resources>

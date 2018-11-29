@@ -1,11 +1,14 @@
 package team23.lecompteurdetartot;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -107,9 +110,28 @@ public class BeloteActivity extends AppCompatActivity {
             Date date = new Date();
 
             currentParty = partyDAO.createParty(gameType, partyName, dateFormat.format(date), playersList);
-            //initializeGameLayout(playersList);
-
+            initializeGameLayout(playersList);
         }
+
+        Button game_button = findViewById(R.id.add_game_button);
+        game_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.points_belote_layout).setVisibility(View.VISIBLE);
+                findViewById(R.id.add_game_button).setVisibility(View.GONE);
+
+            }
+        });
+
+        Button menu_button = findViewById(R.id.go_main_menu_button);
+        menu_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goMenuIntent = new Intent(BeloteActivity.this, MainActivity.class);
+                startActivity(goMenuIntent);
+
+            }
+        });
     }
 
 
@@ -239,4 +261,7 @@ public class BeloteActivity extends AppCompatActivity {
         }
     }
 
+    private void initializeGameLayout(ArrayList<Player> playersList) {
+        //Button initialization
+    }
 }
