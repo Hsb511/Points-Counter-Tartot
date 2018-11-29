@@ -81,5 +81,8 @@
     <string name="not_announced_chelem"> chelem non annoncé et réussi</string>
     <string name="defense_chelem"> chelem infligé par la défense </string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

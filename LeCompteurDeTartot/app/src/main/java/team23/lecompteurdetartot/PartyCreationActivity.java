@@ -56,10 +56,6 @@ public class PartyCreationActivity extends AppCompatActivity {
         validationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //we create the Intent to go to the PartyActivity
-                Intent goToSettingsActivity = new Intent(PartyCreationActivity.this, PartyActivity.class);
-                //we add the playersAmount
-                goToSettingsActivity.putExtra("playersAmount", playersAmount);
 
                 //we add the partyName, by default it's the default string + the date
                 String partyName = ((EditText) findViewById(R.id.party_name_edit_text)).getText().toString();
@@ -79,7 +75,16 @@ public class PartyCreationActivity extends AppCompatActivity {
                     partyName = getResources().getString(R.string.default_party_name) + " " + dateFormat.format(date);
                 }
 
+                //we create the Intent to go to the PartyActivity or BeloteActivity
+                Intent goToSettingsActivity;
+                if (gameTpe.equals("Tarot")) {
+                    goToSettingsActivity = new Intent(PartyCreationActivity.this, PartyActivity.class);
+                } else {
+                    goToSettingsActivity = new Intent(PartyCreationActivity.this, BeloteActivity.class);
+                }
 
+                //we add the playersAmount, the partyName and the game type.
+                goToSettingsActivity.putExtra("playersAmount", playersAmount);
                 goToSettingsActivity.putExtra("partyName", partyName);
                 goToSettingsActivity.putExtra("gameType", gameTpe);
 

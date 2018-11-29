@@ -19,7 +19,8 @@
         <activity android:name=".PartyCreationActivity" />
         <activity android:name=".PartyActivity" />
         <activity android:name=".PlayerActivity" />
-        <activity android:name=".PartyListActivity"></activity>
+        <activity android:name=".PartyListActivity" />
+        <activity android:name=".BeloteActivity"></activity>
     </application>
 
 </manifest>
