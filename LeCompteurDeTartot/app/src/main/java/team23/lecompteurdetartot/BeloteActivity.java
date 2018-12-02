@@ -9,10 +9,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -118,7 +121,7 @@ public class BeloteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 findViewById(R.id.points_belote_layout).setVisibility(View.VISIBLE);
-                findViewById(R.id.add_game_button).setVisibility(View.GONE);
+                //findViewById(R.id.add_game_button).setVisibility(View.GONE);
 
             }
         });
@@ -261,7 +264,40 @@ public class BeloteActivity extends AppCompatActivity {
         }
     }
 
-    private void initializeGameLayout(ArrayList<Player> playersList) {
+    private void initializeGameLayout(final ArrayList<Player> playersList) {
         //Button initialization
+        Button validateGameButton = findViewById(R.id.add_game_belote_button);
+        validateGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //findViewById(R.id.add_game_button).setVisibility(View.VISIBLE);
+                findViewById(R.id.points_belote_layout).setVisibility(View.GONE);
+
+                //We ge the LinearLayout
+                LinearLayout pointsLayout = findViewById(R.id.points_linear_layout);
+
+                //Creating a new horizontal LinearLayout for the team taking.
+                LinearLayout teamlinearLayout = findViewById(R.id.team_linear_layout);
+
+                //We adding a Textview and a checkbox for the 2 teams to team_linear_layout
+                for (int i=0; i<2; i++) {
+                    ToggleButton teamTextView = new ToggleButton(getApplicationContext());
+                    teamTextView.setText(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
+                    teamlinearLayout.addView(teamTextView);
+
+                    CheckBox teamCheckBox = new CheckBox(getApplicationContext());
+                    teamCheckBox.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    teamlinearLayout.addView(teamCheckBox);
+                }
+
+
+
+            }
+        });
     }
 }

@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/shadow"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +32,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/team_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/attack_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/attack" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,7 +77,6 @@
                     android:id="@+id/plus_jack_button"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
-                    android:width="+"
                     android:text="+" />
 
             </LinearLayout>
@@ -95,7 +110,6 @@
                     android:id="@+id/plus_queen_button"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
-                    android:width="+"
                     android:text="+" />
 
             </LinearLayout>
@@ -129,7 +143,6 @@
                     android:id="@+id/plus_king_button"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
-                    android:width="+"
                     android:text="+" />
 
             </LinearLayout>
@@ -163,7 +176,6 @@
                     android:id="@+id/plus_ten_button"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
-                    android:width="+"
                     android:text="+" />
 
             </LinearLayout>
@@ -197,7 +209,6 @@
                     android:id="@+id/plus_ace_button"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
-                    android:width="+"
                     android:text="+" />
 
             </LinearLayout>

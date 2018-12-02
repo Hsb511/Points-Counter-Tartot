@@ -95,6 +95,7 @@
     <string name="dix_der">dix de der ? (dernier pli) </string>
     <string name="belote">belote ? (roi et dame d\'atout) </string>
     <string name="capot">capot ?</string>
+    <string name="attack">Preneur : </string>
 
 
 </resources>
