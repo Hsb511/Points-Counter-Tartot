@@ -277,22 +277,36 @@ public class BeloteActivity extends AppCompatActivity {
                 LinearLayout pointsLayout = findViewById(R.id.points_linear_layout);
 
                 //Creating a new horizontal LinearLayout for the team taking.
-                LinearLayout teamlinearLayout = findViewById(R.id.team_linear_layout);
+                final LinearLayout teamlinearLayout = findViewById(R.id.team_linear_layout);
 
                 //We adding a Textview and a checkbox for the 2 teams to team_linear_layout
                 for (int i=0; i<2; i++) {
-                    ToggleButton teamTextView = new ToggleButton(getApplicationContext());
-                    teamTextView.setText(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
-                    teamlinearLayout.addView(teamTextView);
+                    ToggleButton teamToggleButton = new ToggleButton(getApplicationContext());
+                    teamToggleButton.setText(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
+                    teamlinearLayout.addView(teamToggleButton);
+                }
 
-                    CheckBox teamCheckBox = new CheckBox(getApplicationContext());
-                    teamCheckBox.setOnClickListener(new View.OnClickListener() {
+                for (int i=0; i<2; i++) {
+                    final ToggleButton teamToggleButton = (ToggleButton) teamlinearLayout.getChildAt(i+1);
+                    final int rank = i;
+
+                    teamToggleButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            if (rank == 0) {
+                                ToggleButton theOtherTeamToggleButton = ((ToggleButton) teamlinearLayout.getChildAt(2));
+                                if (theOtherTeamToggleButton.isChecked()) {
+                                    theOtherTeamToggleButton.setChecked(false);
+                                }
+                            } else if (rank == 1) {
+                                ToggleButton theOtherTeamToggleButton = ((ToggleButton) teamlinearLayout.getChildAt(1));
+                                if (theOtherTeamToggleButton.isChecked()) {
+                                    theOtherTeamToggleButton.setChecked(false);
+                                }
+                            }
                         }
                     });
-                    teamlinearLayout.addView(teamCheckBox);
+
                 }
 
 
