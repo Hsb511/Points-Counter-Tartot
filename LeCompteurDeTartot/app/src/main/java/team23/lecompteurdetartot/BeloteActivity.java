@@ -113,15 +113,18 @@ public class BeloteActivity extends AppCompatActivity {
             Date date = new Date();
 
             currentParty = partyDAO.createParty(gameType, partyName, dateFormat.format(date), playersList);
-            initializeGameLayout(playersList);
         }
+
+
+        initializeGameLayout(playersList);
 
         Button game_button = findViewById(R.id.add_game_button);
         game_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 findViewById(R.id.points_belote_layout).setVisibility(View.VISIBLE);
-                //findViewById(R.id.add_game_button).setVisibility(View.GONE);
+                findViewById(R.id.add_game_button).setVisibility(View.GONE);
+                findViewById(R.id.go_main_menu_button).setVisibility(View.GONE);
 
             }
         });
@@ -270,48 +273,117 @@ public class BeloteActivity extends AppCompatActivity {
         validateGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //findViewById(R.id.add_game_button).setVisibility(View.VISIBLE);
                 findViewById(R.id.points_belote_layout).setVisibility(View.GONE);
-
-                //We ge the LinearLayout
-                LinearLayout pointsLayout = findViewById(R.id.points_linear_layout);
-
-                //Creating a new horizontal LinearLayout for the team taking.
-                final LinearLayout teamlinearLayout = findViewById(R.id.team_linear_layout);
-
-                //We adding a Textview and a checkbox for the 2 teams to team_linear_layout
-                for (int i=0; i<2; i++) {
-                    ToggleButton teamToggleButton = new ToggleButton(getApplicationContext());
-                    teamToggleButton.setText(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
-                    teamlinearLayout.addView(teamToggleButton);
-                }
-
-                for (int i=0; i<2; i++) {
-                    final ToggleButton teamToggleButton = (ToggleButton) teamlinearLayout.getChildAt(i+1);
-                    final int rank = i;
-
-                    teamToggleButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (rank == 0) {
-                                ToggleButton theOtherTeamToggleButton = ((ToggleButton) teamlinearLayout.getChildAt(2));
-                                if (theOtherTeamToggleButton.isChecked()) {
-                                    theOtherTeamToggleButton.setChecked(false);
-                                }
-                            } else if (rank == 1) {
-                                ToggleButton theOtherTeamToggleButton = ((ToggleButton) teamlinearLayout.getChildAt(1));
-                                if (theOtherTeamToggleButton.isChecked()) {
-                                    theOtherTeamToggleButton.setChecked(false);
-                                }
-                            }
-                        }
-                    });
-
-                }
-
-
-
+                findViewById(R.id.go_main_menu_button).setVisibility(View.VISIBLE);
+                findViewById(R.id.add_game_button).setVisibility(View.VISIBLE);
             }
         });
+
+        //We get the LinearLayout
+        LinearLayout pointsLayout = findViewById(R.id.points_linear_layout);
+
+        //Calling the horizontal LinearLayout for the team taking and cleaning it
+        final LinearLayout teamlinearLayout = findViewById(R.id.team_linear_layout);
+        if (teamlinearLayout.getChildCount() > 1) {
+            teamlinearLayout.removeViewAt(1);
+            teamlinearLayout.removeViewAt(1);
+        }
+
+        //We adding a ToggleButton and a checkbox for the 2 teams to team_linear_layout
+        for (int i=0; i<2; i++) {
+            ToggleButton teamToggleButton = new ToggleButton(getApplicationContext());
+            teamToggleButton.setText(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
+            teamToggleButton.setTextOff(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
+            teamToggleButton.setTextOn(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
+            teamlinearLayout.addView(teamToggleButton);
+        }
+
+        //We instantiating the ClickListener for the newly created ToggleButton
+        for (int i=0; i<2; i++) {
+            final ToggleButton teamToggleButton = (ToggleButton) teamlinearLayout.getChildAt(i+1);
+            final int rank = i;
+
+            teamToggleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (rank == 0) {
+                        ToggleButton theOtherTeamToggleButton = ((ToggleButton) teamlinearLayout.getChildAt(2));
+                        //if (theOtherTeamToggleButton.isChecked()) {
+                        theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
+                        //}
+                    } else if (rank == 1) {
+                        ToggleButton theOtherTeamToggleButton = ((ToggleButton) teamlinearLayout.getChildAt(1));
+                        //if (theOtherTeamToggleButton.isChecked()) {
+                        theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
+                        //}
+                    }
+                }
+            });
+        }
+
+        //We instianting the ClickListener for the + and - Button
+        for (int i=1; i<6; i++) {
+            final LinearLayout cardLinearLayout = (LinearLayout) pointsLayout.getChildAt(i);
+
+            final Button minusButton = (Button) cardLinearLayout.getChildAt(1);
+            final TextView amountCardTextView = (TextView) cardLinearLayout.getChildAt(2);
+            final int amountCard = Integer.parseInt(amountCardTextView.getText().toString());
+            Button plusButton = (Button) cardLinearLayout.getChildAt(3);
+
+            //For local reasons we are forced to get the Layout and the TextView back each call
+            minusButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout cardLL = (LinearLayout) minusButton.getParent();
+                    TextView cardTV = (TextView) cardLL.getChildAt(2);
+                    int amount = Integer.parseInt(cardTV.getText().toString());
+
+                    if (amount > 0) {
+                        cardTV.setText(String.valueOf(amount - 1));
+                    }
+                }
+            });
+
+            //For local reasons we are forced to get the Layout and the TextView back each call
+            plusButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout cardLL = (LinearLayout) minusButton.getParent();
+                    TextView cardTV = (TextView) cardLL.getChildAt(2);
+                    int amount = Integer.parseInt(cardTV.getText().toString());
+
+                    if (cardLL.equals((LinearLayout) findViewById(R.id.jack_linear_layout))) {
+                        if (amount < 3) {
+                            amount ++;
+                        }
+                    } else {
+                        if (amount < 4) {
+                            amount ++;
+                        }
+                    }
+
+                   cardTV.setText(String.valueOf(amount));
+                }
+            });
+
+            //Finally we initialize the CheckBox for capot
+            final CheckBox capotCheckBox = findViewById(R.id.check_capot);
+            capotCheckBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (capotCheckBox.isChecked()) {
+                        ((CheckBox) findViewById(R.id.check_dix_der)).setChecked(true);
+                        ((CheckBox) findViewById(R.id.check_jack)).setChecked(true);
+                        ((CheckBox) findViewById(R.id.check_nine)).setChecked(true);
+                        ((TextView) findViewById(R.id.score_ace_text_view)).setText("4");
+                        ((TextView) findViewById(R.id.score_ten_text_view)).setText("4");
+                        ((TextView) findViewById(R.id.score_king_text_view)).setText("4");
+                        ((TextView) findViewById(R.id.score_queen_text_view)).setText("4");
+                        ((TextView) findViewById(R.id.amount_jack_text_view)).setText("3");
+                    }
+                }
+            });
+
+        }
     }
 }
