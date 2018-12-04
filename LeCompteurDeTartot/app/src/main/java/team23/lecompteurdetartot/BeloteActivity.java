@@ -15,6 +15,7 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.text.DateFormat;
@@ -126,6 +127,7 @@ public class BeloteActivity extends AppCompatActivity {
                 findViewById(R.id.points_belote_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.add_game_button).setVisibility(View.GONE);
                 findViewById(R.id.go_main_menu_button).setVisibility(View.GONE);
+                addGame();
 
             }
         });
@@ -405,7 +407,7 @@ public class BeloteActivity extends AppCompatActivity {
         }
     }
 
-    public void addGame() {
+    public int addGame() {
         LinearLayout teamLinearlayout = findViewById(R.id.team_linear_layout);
         CheckBox capotCB = findViewById(R.id.check_capot);
         int score = 0;
@@ -413,10 +415,10 @@ public class BeloteActivity extends AppCompatActivity {
         if (capotCB.isChecked()) {
             score += 252;
         } else {
-            TextView jackTV = findViewById(R.id.jack_text_view);
-            TextView queenTV = findViewById(R.id.queen_text_view);
-            TextView kingTV = findViewById(R.id.king_text_view);
-            TextView tenTV = findViewById(R.id.ten_text_view);
+            TextView jackTV = findViewById(R.id.amount_jack_text_view);
+            TextView queenTV = findViewById(R.id.score_queen_text_view);
+            TextView kingTV = findViewById(R.id.score_king_text_view);
+            TextView tenTV = findViewById(R.id.score_ten_text_view);
             TextView aceTV = findViewById(R.id.score_ace_text_view);
             CheckBox nineCB = findViewById(R.id.check_nine);
             int nine = nineCB.isChecked() ? 1 : 0;
@@ -436,9 +438,6 @@ public class BeloteActivity extends AppCompatActivity {
         }
 
 
-
-
-
-
+        return score;
     }
 }
