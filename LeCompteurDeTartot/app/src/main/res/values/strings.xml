@@ -93,7 +93,7 @@
     <string name="nine_trump">neuf d\'atout ? </string>
     <string name="jack_trump">valet d\'atout ? </string>
     <string name="dix_der">dix de der ? (dernier pli) </string>
-    <string name="belote">belote ? (roi et dame d\'atout) </string>
+    <string name="belote">belote ? </string>
     <string name="capot">capot ?</string>
     <string name="attack">Preneur : </string>
 

@@ -24,6 +24,7 @@ import java.util.Date;
 
 import team23.lecompteurdetartot.database.PartyDAO;
 import team23.lecompteurdetartot.database.PlayerDAO;
+import team23.lecompteurdetartot.java_object.Chelem;
 import team23.lecompteurdetartot.java_object.GameType;
 import team23.lecompteurdetartot.java_object.Party;
 import team23.lecompteurdetartot.java_object.Player;
@@ -267,6 +268,10 @@ public class BeloteActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initialize the GameLayout
+     * @param playersList all the players
+     */
     private void initializeGameLayout(final ArrayList<Player> playersList) {
         //Button initialization
         Button validateGameButton = findViewById(R.id.add_game_belote_button);
@@ -284,42 +289,11 @@ public class BeloteActivity extends AppCompatActivity {
 
         //Calling the horizontal LinearLayout for the team taking and cleaning it
         final LinearLayout teamlinearLayout = findViewById(R.id.team_linear_layout);
-        if (teamlinearLayout.getChildCount() > 1) {
-            teamlinearLayout.removeViewAt(1);
-            teamlinearLayout.removeViewAt(1);
-        }
+        createTeamToggleButton(teamlinearLayout);
 
-        //We adding a ToggleButton and a checkbox for the 2 teams to team_linear_layout
-        for (int i=0; i<2; i++) {
-            ToggleButton teamToggleButton = new ToggleButton(getApplicationContext());
-            teamToggleButton.setText(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
-            teamToggleButton.setTextOff(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
-            teamToggleButton.setTextOn(playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName());
-            teamlinearLayout.addView(teamToggleButton);
-        }
+        final LinearLayout beloteLinearLayout = findViewById(R.id.belote_linear_layout);
+        createTeamToggleButton(beloteLinearLayout);
 
-        //We instantiating the ClickListener for the newly created ToggleButton
-        for (int i=0; i<2; i++) {
-            final ToggleButton teamToggleButton = (ToggleButton) teamlinearLayout.getChildAt(i+1);
-            final int rank = i;
-
-            teamToggleButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (rank == 0) {
-                        ToggleButton theOtherTeamToggleButton = ((ToggleButton) teamlinearLayout.getChildAt(2));
-                        //if (theOtherTeamToggleButton.isChecked()) {
-                        theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
-                        //}
-                    } else if (rank == 1) {
-                        ToggleButton theOtherTeamToggleButton = ((ToggleButton) teamlinearLayout.getChildAt(1));
-                        //if (theOtherTeamToggleButton.isChecked()) {
-                        theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
-                        //}
-                    }
-                }
-            });
-        }
 
         //We instianting the ClickListener for the + and - Button
         for (int i=1; i<6; i++) {
@@ -385,5 +359,86 @@ public class BeloteActivity extends AppCompatActivity {
             });
 
         }
+    }
+
+    /**
+     * Method to graphically add the team Toggle Buttons
+     * @param linearLayout
+     */
+    public void createTeamToggleButton(LinearLayout linearLayout){
+        if (linearLayout.getChildCount() > 1) {
+            linearLayout.removeViewAt(1);
+            linearLayout.removeViewAt(1);
+        }
+
+        //We adding a ToggleButton and a checkbox for the 2 teams to team_linear_layout
+        for (int i=0; i<2; i++) {
+            String teamValue = playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName();
+            ToggleButton teamToggleButton = new ToggleButton(getApplicationContext());
+            teamToggleButton.setText(teamValue);
+            teamToggleButton.setTextOff(teamValue);
+            teamToggleButton.setTextOn(teamValue);
+            linearLayout.addView(teamToggleButton);
+        }
+
+        //We instantiating the ClickListener for the newly created ToggleButton
+        for (int i=0; i<2; i++) {
+            final ToggleButton teamToggleButton = (ToggleButton) linearLayout.getChildAt(i+1);
+            final int rank = i;
+
+            teamToggleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (rank == 0) {
+                        ToggleButton theOtherTeamToggleButton = ((ToggleButton) ((LinearLayout) teamToggleButton.getParent()).getChildAt(2));
+                        //if (theOtherTeamToggleButton.isChecked()) {
+                        theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
+                        //}
+                    } else if (rank == 1) {
+                        ToggleButton theOtherTeamToggleButton = ((ToggleButton) ((LinearLayout) teamToggleButton.getParent()).getChildAt(1));
+                        //if (theOtherTeamToggleButton.isChecked()) {
+                        theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
+                        //}
+                    }
+                }
+            });
+        }
+    }
+
+    public void addGame() {
+        LinearLayout teamLinearlayout = findViewById(R.id.team_linear_layout);
+        CheckBox capotCB = findViewById(R.id.check_capot);
+        int score = 0;
+
+        if (capotCB.isChecked()) {
+            score += 252;
+        } else {
+            TextView jackTV = findViewById(R.id.jack_text_view);
+            TextView queenTV = findViewById(R.id.queen_text_view);
+            TextView kingTV = findViewById(R.id.king_text_view);
+            TextView tenTV = findViewById(R.id.ten_text_view);
+            TextView aceTV = findViewById(R.id.score_ace_text_view);
+            CheckBox nineCB = findViewById(R.id.check_nine);
+            int nine = nineCB.isChecked() ? 1 : 0;
+            CheckBox jackCB = findViewById(R.id.check_jack);
+            int jack = jackCB.isChecked() ? 1 : 0;
+            CheckBox derCB = findViewById(R.id.check_dix_der);
+            int der = derCB.isChecked() ? 1 : 0;
+
+            score += 2 * Integer.parseInt(jackTV.getText().toString());
+            score += 3 * Integer.parseInt(queenTV.getText().toString());
+            score += 4 * Integer.parseInt(kingTV.getText().toString());
+            score += 10 * Integer.parseInt(tenTV.getText().toString());
+            score += 11 * Integer.parseInt(aceTV.getText().toString());
+            score += 14 * nine;
+            score += 20 * jack;
+            score += 10 * der;
+        }
+
+
+
+
+
+
     }
 }
