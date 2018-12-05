@@ -97,5 +97,7 @@
     <string name="capot">capot ?</string>
     <string name="attack">Preneur : </string>
 
+    <string name="noTeam">Vous devez choisir une team attaquante</string>
+
 
 </resources>

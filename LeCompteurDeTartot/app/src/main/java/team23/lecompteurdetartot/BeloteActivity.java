@@ -35,7 +35,7 @@ public class BeloteActivity extends AppCompatActivity {
     private static int NAME_SIZE_MAX = 14;
     private int screenWidth;
     private int screenHeight;
-    private int columnMax = 0;
+    private int currentRow = 0;
 
     //party parameters
     private Party currentParty;
@@ -84,8 +84,10 @@ public class BeloteActivity extends AppCompatActivity {
             //Initializing the table
             addFrameLayoutInTable(createTextViewFirstColumn(0, false), 0,0);
             addFrameLayoutInTable(createTextViewFirstColumn(0, false), 0,1);
+            currentRow ++;
             addFrameLayoutInTable(createTextViewFirstColumn(0, false), playersAmount-1,0);
             addFrameLayoutInTable(createTextViewFirstColumn(0, false), playersAmount-1,1);
+            currentRow ++;
             for (int i = 0; i < playersAmount - 2; i++) {
                 // we get the player from the Intent and then we get it back from the database
                 Player player1 = getIntent().getParcelableExtra("player " + String.valueOf(2*i));
@@ -153,7 +155,7 @@ public class BeloteActivity extends AppCompatActivity {
         textView.setHeight(Math.round((40*screenHeight)/1080));
         textView.setGravity(Gravity.CENTER);
         GridLayout gamesLayout = findViewById(R.id. games_grid_layout);
-        FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnMax);
+        FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, currentRow);
         FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         borderLayout.setLayoutParams(frameLayoutParams);
         borderLayout.addView(textView);
@@ -175,7 +177,7 @@ public class BeloteActivity extends AppCompatActivity {
         lp.width = Math.round((30*screenWidth)/768);
         imageButton.setLayoutParams(lp);
         GridLayout gamesLayout = findViewById(R.id. games_grid_layout);
-        FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, columnMax);
+        FrameLayout borderLayout = createFrameLayoutForGrid(row, column, playersAmount + 1, currentRow);
         FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(Math.round((40*screenHeight)/1080), Math.round((30*screenWidth)/768));
         borderLayout.setLayoutParams(frameLayoutParams);
         borderLayout.addView(imageButton);
@@ -280,9 +282,17 @@ public class BeloteActivity extends AppCompatActivity {
         validateGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.points_belote_layout).setVisibility(View.GONE);
-                findViewById(R.id.go_main_menu_button).setVisibility(View.VISIBLE);
-                findViewById(R.id.add_game_button).setVisibility(View.VISIBLE);
+                LinearLayout teamLinearLayout = findViewById(R.id.team_linear_layout);
+                ToggleButton team1TB = (ToggleButton) teamLinearLayout.getChildAt(1);
+                ToggleButton team2TB = (ToggleButton) teamLinearLayout.getChildAt(2);
+                if (team1TB.isChecked() || team2TB.isChecked()) {
+                    findViewById(R.id.points_belote_layout).setVisibility(View.GONE);
+                    findViewById(R.id.go_main_menu_button).setVisibility(View.VISIBLE);
+                    findViewById(R.id.add_game_button).setVisibility(View.VISIBLE);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.noTeam), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -291,10 +301,10 @@ public class BeloteActivity extends AppCompatActivity {
 
         //Calling the horizontal LinearLayout for the team taking and cleaning it
         final LinearLayout teamlinearLayout = findViewById(R.id.team_linear_layout);
-        createTeamToggleButton(teamlinearLayout);
+        createTeamToggleButton(teamlinearLayout, true);
 
         final LinearLayout beloteLinearLayout = findViewById(R.id.belote_linear_layout);
-        createTeamToggleButton(beloteLinearLayout);
+        createTeamToggleButton(beloteLinearLayout, false);
 
 
         //We instianting the ClickListener for the + and - Button
@@ -367,7 +377,8 @@ public class BeloteActivity extends AppCompatActivity {
      * Method to graphically add the team Toggle Buttons
      * @param linearLayout
      */
-    public void createTeamToggleButton(LinearLayout linearLayout){
+    public void createTeamToggleButton(LinearLayout linearLayout, boolean attackingTeam){
+        final boolean team = attackingTeam;
         if (linearLayout.getChildCount() > 1) {
             linearLayout.removeViewAt(1);
             linearLayout.removeViewAt(1);
@@ -393,14 +404,14 @@ public class BeloteActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (rank == 0) {
                         ToggleButton theOtherTeamToggleButton = ((ToggleButton) ((LinearLayout) teamToggleButton.getParent()).getChildAt(2));
-                        //if (theOtherTeamToggleButton.isChecked()) {
+                        if (!team && theOtherTeamToggleButton.isChecked()) {
                         theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
-                        //}
+                        }
                     } else if (rank == 1) {
                         ToggleButton theOtherTeamToggleButton = ((ToggleButton) ((LinearLayout) teamToggleButton.getParent()).getChildAt(1));
-                        //if (theOtherTeamToggleButton.isChecked()) {
+                        if (!team && theOtherTeamToggleButton.isChecked()) {
                         theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
-                        //}
+                        }
                     }
                 }
             });
@@ -409,8 +420,15 @@ public class BeloteActivity extends AppCompatActivity {
 
     public int addGame() {
         LinearLayout teamLinearlayout = findViewById(R.id.team_linear_layout);
+        ToggleButton team1TB = (ToggleButton) teamLinearlayout.getChildAt(1);
+        ToggleButton team2TB = (ToggleButton) teamLinearlayout.getChildAt(2);
+        LinearLayout beloteLinearLayout = findViewById(R.id.belote_linear_layout);
+        ToggleButton beloteTeam1TB =  (ToggleButton) beloteLinearLayout.getChildAt(1);
+        ToggleButton beloteTeam2TB =  (ToggleButton) beloteLinearLayout.getChildAt(2);
         CheckBox capotCB = findViewById(R.id.check_capot);
+
         int score = 0;
+        int scoreDefense = 0;
 
         if (capotCB.isChecked()) {
             score += 252;
@@ -435,8 +453,36 @@ public class BeloteActivity extends AppCompatActivity {
             score += 14 * nine;
             score += 20 * jack;
             score += 10 * der;
+
+            scoreDefense += 162 - score;
+
+            if (team1TB.isChecked() && beloteTeam1TB.isChecked() || team2TB.isChecked() && beloteTeam2TB.isChecked()) {
+                score += 20;
+            } else if (team1TB.isChecked() && beloteTeam2TB.isChecked() || team2TB.isChecked() && beloteTeam2TB.isChecked()) {
+                scoreDefense += 20;
+            }
         }
 
+        if (score < scoreDefense) {
+            score = 0;
+            scoreDefense += score;
+        }
+
+
+
+        for (int i=0; i<2; i++) {
+            TextView scoreAttackTextView = createTextViewForGridLayout(String.valueOf(score), screenWidth);
+            TextView scoreDefenseTextView  = createTextViewForGridLayout(String.valueOf(scoreDefense), screenWidth);
+            if (team1TB.isChecked()) {
+                addFrameLayoutInTable(scoreAttackTextView,1, currentRow);
+                addFrameLayoutInTable(scoreDefenseTextView, 2, currentRow);
+                currentRow ++;
+            } else if (team2TB.isChecked()) {
+                addFrameLayoutInTable(scoreAttackTextView,2, currentRow);
+                addFrameLayoutInTable(scoreDefenseTextView, 1, currentRow);
+                currentRow ++;
+            }
+        }
 
         return score;
     }
