@@ -36,6 +36,8 @@ public class BeloteActivity extends AppCompatActivity {
     private int screenWidth;
     private int screenHeight;
     private int currentRow = 0;
+    private int scoreTeam1 = 0;
+    private int scoreTeam2 = 0;
 
     //party parameters
     private Party currentParty;
@@ -85,8 +87,8 @@ public class BeloteActivity extends AppCompatActivity {
             addFrameLayoutInTable(createTextViewFirstColumn(0, false), 0,0);
             addFrameLayoutInTable(createTextViewFirstColumn(0, false), 0,1);
             currentRow ++;
-            addFrameLayoutInTable(createTextViewFirstColumn(0, false), playersAmount-1,0);
-            addFrameLayoutInTable(createTextViewFirstColumn(0, false), playersAmount-1,1);
+            addFrameLayoutInTable(createTextViewFirstColumn(1, false), playersAmount-1,0);
+            addFrameLayoutInTable(createTextViewFirstColumn(1, false), playersAmount-1,1);
             currentRow ++;
             for (int i = 0; i < playersAmount - 2; i++) {
                 // we get the player from the Intent and then we get it back from the database
@@ -103,11 +105,7 @@ public class BeloteActivity extends AppCompatActivity {
                 // for the borders
                 addFrameLayoutInTable(playerNameTV, i+1, 0);
 
-
-                TextView scoreTV = createTextViewForGridLayout("0", screenWidth);
-                scoreTV.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                scoreTV.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                addFrameLayoutInTable(scoreTV, i+1, 1);
+                updateScore(scoreTeam1, i+1);
             }
 
             PartyDAO partyDAO = new PartyDAO(getApplicationContext());
@@ -129,8 +127,6 @@ public class BeloteActivity extends AppCompatActivity {
                 findViewById(R.id.points_belote_layout).setVisibility(View.VISIBLE);
                 findViewById(R.id.add_game_button).setVisibility(View.GONE);
                 findViewById(R.id.go_main_menu_button).setVisibility(View.GONE);
-                addGame();
-
             }
         });
 
@@ -289,7 +285,7 @@ public class BeloteActivity extends AppCompatActivity {
                     findViewById(R.id.points_belote_layout).setVisibility(View.GONE);
                     findViewById(R.id.go_main_menu_button).setVisibility(View.VISIBLE);
                     findViewById(R.id.add_game_button).setVisibility(View.VISIBLE);
-
+                    addGame();
                 } else {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.noTeam), Toast.LENGTH_SHORT).show();
                 }
@@ -386,7 +382,7 @@ public class BeloteActivity extends AppCompatActivity {
 
         //We adding a ToggleButton and a checkbox for the 2 teams to team_linear_layout
         for (int i=0; i<2; i++) {
-            String teamValue = playersList.get(i).getName() + " / " + playersList.get(2*i+1).getName();
+            String teamValue = resizeName(playersList.get(2*i).getName(), NAME_SIZE_MAX) + " / " + resizeName(playersList.get(2*i+1).getName(), NAME_SIZE_MAX);
             ToggleButton teamToggleButton = new ToggleButton(getApplicationContext());
             teamToggleButton.setText(teamValue);
             teamToggleButton.setTextOff(teamValue);
@@ -404,13 +400,17 @@ public class BeloteActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (rank == 0) {
                         ToggleButton theOtherTeamToggleButton = ((ToggleButton) ((LinearLayout) teamToggleButton.getParent()).getChildAt(2));
-                        if (!team && theOtherTeamToggleButton.isChecked()) {
-                        theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
+                        if (team) {
+                            theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
+                        } else if (theOtherTeamToggleButton.isChecked()) {
+                            theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
                         }
                     } else if (rank == 1) {
                         ToggleButton theOtherTeamToggleButton = ((ToggleButton) ((LinearLayout) teamToggleButton.getParent()).getChildAt(1));
-                        if (!team && theOtherTeamToggleButton.isChecked()) {
-                        theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
+                        if (team) {
+                            theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
+                        } else if (theOtherTeamToggleButton.isChecked()) {
+                            theOtherTeamToggleButton.setChecked(!teamToggleButton.isChecked());
                         }
                     }
                 }
@@ -426,6 +426,9 @@ public class BeloteActivity extends AppCompatActivity {
         ToggleButton beloteTeam1TB =  (ToggleButton) beloteLinearLayout.getChildAt(1);
         ToggleButton beloteTeam2TB =  (ToggleButton) beloteLinearLayout.getChildAt(2);
         CheckBox capotCB = findViewById(R.id.check_capot);
+
+        Log.i("testDyn", "Team 1 : " + String.valueOf(team1TB.isChecked()) + " ; Team 2 : " + String.valueOf(team2TB.isChecked()));
+        Log.i("testDyn", "Belote 1 : " + String.valueOf(beloteTeam1TB.isChecked()) + " ; Belote 2 : " + String.valueOf(beloteTeam2TB.isChecked()));
 
         int score = 0;
         int scoreDefense = 0;
@@ -464,26 +467,58 @@ public class BeloteActivity extends AppCompatActivity {
         }
 
         if (score < scoreDefense) {
-            score = 0;
             scoreDefense += score;
-        }
-
-
-
-        for (int i=0; i<2; i++) {
-            TextView scoreAttackTextView = createTextViewForGridLayout(String.valueOf(score), screenWidth);
-            TextView scoreDefenseTextView  = createTextViewForGridLayout(String.valueOf(scoreDefense), screenWidth);
-            if (team1TB.isChecked()) {
-                addFrameLayoutInTable(scoreAttackTextView,1, currentRow);
-                addFrameLayoutInTable(scoreDefenseTextView, 2, currentRow);
-                currentRow ++;
-            } else if (team2TB.isChecked()) {
-                addFrameLayoutInTable(scoreAttackTextView,2, currentRow);
-                addFrameLayoutInTable(scoreDefenseTextView, 1, currentRow);
-                currentRow ++;
+            score = 0;
+            if (team1TB.isChecked() && beloteTeam1TB.isChecked() || team2TB.isChecked() && beloteTeam2TB.isChecked()) {
+                score = 20;
             }
         }
 
+
+        //Creating each TextView for each case in the row
+        TextView scoreAttackTextView = createTextViewForGridLayout(String.valueOf(score), screenWidth);
+        TextView scoreDefenseTextView  = createTextViewForGridLayout(String.valueOf(scoreDefense), screenWidth);
+        TextView leftSideTextView = createTextViewFirstColumn(currentRow - 1, true);
+        TextView rightSideTextView = createTextViewFirstColumn(currentRow - 1, false);
+
+        //Adding them in a FrameLayout and then in the GridLayout depending on the attacker
+        if (team1TB.isChecked()) {
+            addFrameLayoutInTable(leftSideTextView, 0,currentRow);
+            addFrameLayoutInTable(scoreAttackTextView,1, currentRow);
+            addFrameLayoutInTable(scoreDefenseTextView, 2, currentRow);
+            addFrameLayoutInTable(rightSideTextView, 3, currentRow);
+            currentRow ++;
+
+            scoreTeam1 += score;
+            scoreTeam2 += scoreDefense;
+
+            Log.i("testDyn", "Team 1 : " + String.valueOf(team1TB.isChecked()) + " ; Team 2 : " + String.valueOf(team2TB.isChecked()));
+
+        } else if (team2TB.isChecked()) {
+            addFrameLayoutInTable(leftSideTextView, 0,currentRow);
+            addFrameLayoutInTable(scoreDefenseTextView, 1, currentRow);
+            addFrameLayoutInTable(scoreAttackTextView,2, currentRow);
+            addFrameLayoutInTable(rightSideTextView, 3, currentRow);
+            currentRow ++;
+
+
+            scoreTeam1 += scoreDefense;
+            scoreTeam2 += score;
+
+            Log.i("testDyn", "Team 1 : " + String.valueOf(team1TB.isChecked()) + " ; Team 2 : " + String.valueOf(team2TB.isChecked()));
+        }
+
+
+        updateScore(scoreTeam1, 1);
+        updateScore(scoreTeam2, 2);
+
         return score;
+    }
+
+    private void updateScore(int scoreTeam, int column) {
+        TextView scoreTV = createTextViewForGridLayout(String.valueOf(scoreTeam), screenWidth);
+        scoreTV.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        scoreTV.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        addFrameLayoutInTable(scoreTV, column, 1);
     }
 }
